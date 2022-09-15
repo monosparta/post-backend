@@ -22,9 +22,10 @@ class TeamFactory extends Factory
      */
     public function definition()
     {
+        $user = User::where('email', 'test@trunk-studio.com')->first();
         return [
             'name' => $this->faker->unique()->company(),
-            'user_id' => User::factory(),
+            'user_id' => $user->id,
             'personal_team' => true,
         ];
     }
