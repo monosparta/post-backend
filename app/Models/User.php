@@ -9,7 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
-use Laravel\Sanctum\HasApiTokens;
+// use Laravel\Sanctum\HasApiTokens;
+use MohamedGaber\SanctumRefreshToken\Traits\HasApiTokens;
 use App\Traits\UuidTrait;
 
 class User extends Authenticatable
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'mobile_country_code', 'mobile_country_calling_code', 'mobile', 'full_name', 'custom_id'
     ];
 
     /**
@@ -41,6 +42,9 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'two_factor_confirmed_at',
+        'current_team_id',
+        'profile_photo_path',
     ];
 
     /**
@@ -60,4 +64,24 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function profile() {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function organization() {
+        return $this->hasOne(Organization::class);
+    }
+
+    public function address() {
+        return $this->hasManyThrough(Address::class, UserProfile::class, 'user_id', 'addressable_id', 'id', 'id');
+    }
+
+    public function userCategories() {
+        return $this->belongsToMany(UserCategory::class, 'user_user_categories');
+    }
+
+    public function emergencyContacts() {
+        return $this->hasMany(EmergencyContact::class);
+    }
 }

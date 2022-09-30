@@ -2,12 +2,22 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Laravel\Nova\Fields\Gravatar;
+
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
+
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasOne;
+use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\Password;
+
+use App\Nova\Lenses\MostValuableUsers;
+
+use Laravel\Nova\Fields\BelongsToMany;
+
+use Laravel\Nova\Fields\HasOneThrough;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class User extends Resource
@@ -44,11 +54,13 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->sortable()->hideFromIndex(),
+
+            Text::make('Custom ID'),
 
             Gravatar::make()->maxWidth(50),
 
-            Text::make('Name')
+            Text::make('Username', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
@@ -58,10 +70,26 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
+            Text::make('Mobile Country Code')->hideFromIndex(),
+
+            Text::make('Mobile Country Calling Code'),
+            
+            Text::make('Mobile'),
+
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+
+            BelongsToMany::make('User Categories'),
+
+            HasOne::make('UserProfile', 'profile')->onlyOnDetail(),
+
+            HasOne::make('Organization', 'organization')->onlyOnDetail(),
+
+            HasMany::make('UserEmergencyContact', 'emergencyContacts'),
+
+            HasOneThrough::make('Address')->onlyOnDetail(),
         ];
     }
 
@@ -73,7 +101,12 @@ class User extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            // new TotalUsers(),
+            // new NewUsers(),
+            // // new ActiveUsers(),
+            // (new CategoryUser()),
+        ];
     }
 
     /**
@@ -95,7 +128,9 @@ class User extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [
+            new MostValuableUsers(),
+        ];
     }
 
     /**

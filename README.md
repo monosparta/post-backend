@@ -6,9 +6,13 @@ MonoCRM - Membership Management System for Monospace
 
 Laravel 9 + Laravel Jetstream (Livewrie + Blade) + Laravel Nova
 
-## Start up
+## PHP extension
+php 8
+- php-zip php-dom php-curl
 
-Nova setup
+## Project set up
+
+Nova setup need email and license
 ```
 composer config http-basic.nova.laravel.com your-nova-account-email@your-domain.com your-license-key
 ```
@@ -27,14 +31,35 @@ npm install && npm run build
 setting your `.env` file
 ```
 DB_DATABASE=monochrome
-DB_USERNAME=root
-DB_PASSWORD=xxxxx
+DB_USERNAME=<your db account>
+DB_PASSWORD=<your db password>
 ```
 run serve
 ```
 php artisan key:generate
 php artisan migrate --seed
 php artisan serve
+```
+
+clean database
+```
+php artisan db:wipe
+```
+
+fresh database with seed
+```
+php artisan migrate:fresh --seed
+```
+
+rollback all migrations and re run the migrations + seed
+```
+php artisan migrate:refresh --seed
+```
+
+## Document - swagger docs
+generate api docs
+```
+php artisan l5-swagger:generate
 ```
 
 ## License

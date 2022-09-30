@@ -2,11 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\EmergencyContact;
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\UserProfile;
+use App\Models\Organization;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
@@ -25,9 +28,14 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
+            'custom_id' => $this->faker->numerify('7E####'),
+            'name' => Str::random(5).$this->faker->numerify('####'),
+            'full_name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'mobile_country_code' => 'TW',
+            'mobile_country_calling_code' => $this->faker->numerify('+886'),
+            'mobile' => $this->faker->unique()->numerify('9########'),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
@@ -65,5 +73,21 @@ class UserFactory extends Factory
                 }),
             'ownedTeams'
         );
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterMaking(function (User $user) {
+            //
+        })->afterCreating(function (User $user) {
+            EmergencyContact::factory()->count(1)->for($user)->create();
+            UserProfile::factory()->for($user)->hasAddress(1)->create();
+            Organization::factory()->for($user)->hasAddress(1)->create();
+        });
     }
 }

@@ -1,0 +1,1013 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MMSv2",
+        "description": "Monospace Member System API 文件",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/users/categories": {
+            "get": {
+                "tags": [
+                    "UserCategory"
+                ],
+                "summary": "Display all users categories.",
+                "operationId": "9f1e34fea5cfdce8c144d678fcff613a",
+                "parameters": [
+                    {
+                        "name": "paginate",
+                        "in": "query",
+                        "description": "Number of users per page, default is 10",
+                        "required": false,
+                        "example": "10"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter userCategory by type name",
+                        "required": false,
+                        "example": ""
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "UserCategory"
+                ],
+                "summary": "Create new user category.",
+                "operationId": "b4ea18082958df206b71081a1dd95c94",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "default": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/categories/{id}": {
+            "get": {
+                "tags": [
+                    "UserCategory"
+                ],
+                "summary": "Display Category",
+                "operationId": "90be3f908ffd971f4b63fc9c00e4d189",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UserCategory ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "UserCategory"
+                ],
+                "summary": "Update the User Category name.",
+                "operationId": "15d7e5797fa24c9a29d53233ab72e3cf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UserCategory ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "default": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "UserCategory"
+                ],
+                "summary": "Remove User Category.",
+                "operationId": "2a33cbf1ff43f5e57a4d24d38fc40b73",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UserCategory ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Paginate all users",
+                "operationId": "c457726701591d1183b53aa71fc13441",
+                "parameters": [
+                    {
+                        "name": "paginate",
+                        "in": "query",
+                        "description": "Number of users per page",
+                        "required": false,
+                        "example": "10"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter users by name or email or mobile",
+                        "required": false,
+                        "example": ""
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new user",
+                "operationId": "592819a0265360b2014512d6dbfaf0e7",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "custom_id": {
+                                        "type": "string",
+                                        "default": "7E0001"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "default": "test01"
+                                    },
+                                    "full_name": {
+                                        "type": "string",
+                                        "default": "test01"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test01@example.com"
+                                    },
+                                    "mobile_country_code": {
+                                        "type": "string",
+                                        "default": "TW"
+                                    },
+                                    "mobile_country_calling_code": {
+                                        "type": "string",
+                                        "default": "+886"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "default": "905123456"
+                                    },
+                                    "password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    },
+                                    "confirm_password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Display User by user id",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update User info by user id",
+                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "default": "test"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test@example.com"
+                                    },
+                                    "full_name": {
+                                        "type": "string",
+                                        "default": "Test"
+                                    },
+                                    "mobile_country_code": {
+                                        "type": "string",
+                                        "default": "TW"
+                                    },
+                                    "mobile_country_calling_code": {
+                                        "type": "string",
+                                        "default": "+886"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "default": "905123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete User by user id",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/profile": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create/Update the User profile by user id",
+                "operationId": "be160285acc78893a8db3ed0f9a6d8c9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "categories": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "number",
+                                                "default": 4
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "default": "Test"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "default": "Test"
+                                    },
+                                    "middle_name": {
+                                        "type": "string",
+                                        "default": "Test"
+                                    },
+                                    "birth_date": {
+                                        "type": "string",
+                                        "default": "1998-01-01"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "default": "male"
+                                    },
+                                    "job_title": {
+                                        "type": "string",
+                                        "default": "engineer"
+                                    },
+                                    "phone_country_code": {
+                                        "type": "string",
+                                        "default": "TW"
+                                    },
+                                    "phone_country_calling_code": {
+                                        "type": "string",
+                                        "default": "+886"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "default": "0422010000"
+                                    },
+                                    "nationality": {
+                                        "type": "string",
+                                        "default": "中華民國"
+                                    },
+                                    "identity_code": {
+                                        "type": "string",
+                                        "default": "N121111111"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "city": {
+                                                "type": "string",
+                                                "default": "台中市"
+                                            },
+                                            "region": {
+                                                "type": "string",
+                                                "default": "西區"
+                                            },
+                                            "zip_code": {
+                                                "type": "string",
+                                                "default": "403"
+                                            },
+                                            "address_line_1": {
+                                                "type": "string",
+                                                "default": "台灣大道一段"
+                                            },
+                                            "address_line_2": {
+                                                "type": "string",
+                                                "default": ""
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/organization": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create/Update the User Organization by user id",
+                "operationId": "2d458465a7f2faf095cc87eaab88ceaa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "default": "測試股份有限公司"
+                                    },
+                                    "vat": {
+                                        "type": "string",
+                                        "default": "0000000"
+                                    },
+                                    "phone_country_code": {
+                                        "type": "string",
+                                        "default": "TW"
+                                    },
+                                    "phone_country_calling_code": {
+                                        "type": "string",
+                                        "default": "+886"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "default": "0422000000"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test@example.com"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "city": {
+                                                "type": "string",
+                                                "default": "台中市"
+                                            },
+                                            "region": {
+                                                "type": "string",
+                                                "default": "西區"
+                                            },
+                                            "zip_code": {
+                                                "type": "string",
+                                                "default": "403"
+                                            },
+                                            "address_line_1": {
+                                                "type": "string",
+                                                "default": "台灣大道一段"
+                                            },
+                                            "address_line_2": {
+                                                "type": "string",
+                                                "default": ""
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/emergency-contact": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create/Update the User Emergency Contact by user id",
+                "operationId": "e78aef4e36ae091814960abf48ed1744",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "default": "測試"
+                                    },
+                                    "mobile_country_code": {
+                                        "type": "string",
+                                        "default": "TW"
+                                    },
+                                    "mobile_country_calling_code": {
+                                        "type": "string",
+                                        "default": "+886"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "default": "905000000"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "register by email and password",
+                "operationId": "6795f2f85dc8207154329e145be90507",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test@example.com"
+                                    },
+                                    "password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    },
+                                    "confirm_password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "login by email and password",
+                "operationId": "45bde25b97150f3e175435ff049d7ed1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test@example.com"
+                                    },
+                                    "password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/token-clear": {
+            "post": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "Clean user all token by access token",
+                "operationId": "c9d4f76c3cea6f356f08ea4ffb08066f",
+                "responses": {
+                    "200": {
+                        "description": "Login success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/refresh-token": {
+            "get": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "use refresh token return new access token, and clean old access token, need Bearer refresh token",
+                "operationId": "0f8c0a1361814df16895be8c27cf865f",
+                "responses": {
+                    "200": {
+                        "description": "Login success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "V1/Auth",
+            "description": "Use Token Authentication"
+        },
+        {
+            "name": "Enumerate Dropdown",
+            "description": "Enumerate of drop down list"
+        },
+        {
+            "name": "Users",
+            "description": "Admin CRUD User"
+        },
+        {
+            "name": "UserCategory",
+            "description": "Admin CRUD UserCategory"
+        },
+        {
+            "name": "LineBot",
+            "description": "API Endpoints of LineBot of Message"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

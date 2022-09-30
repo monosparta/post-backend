@@ -2,6 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\EnumerateController;
+use App\Http\Controllers\LineBotMsgController;
+use App\Http\Controllers\UserCategoryController;
+use App\Http\Controllers\EnumerateItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +23,22 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+Route::prefix('v1')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+});
+
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    Route::post('token-clear', [AuthController::class, 'cleanToken']);
+    Route::get('refresh-token', [AuthController::class, 'refreshToken'])->name('api.token.refresh');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users/categories', UserCategoryController::class);
+    Route::apiResource('users', UserController::class);
+    Route::post('users/{user}/profile', [UserController::class, 'profile']);
+    Route::post('users/{user}/organization', [UserController::class, 'organization']);
+    Route::post('users/{user}/emergency-contact', [UserController::class, 'emergencyContact']);
+});
