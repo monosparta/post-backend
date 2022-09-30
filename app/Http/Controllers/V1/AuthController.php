@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\V1;
 
-use Carbon\Carbon;
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthResource;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
 class AuthController extends Controller
 {
     /* #region Auth register */
     /**
      * register by email and password
+     *
      *  @OA\POST(
      *      path="/api/v1/register",
      *      tags={"V1/Auth"},
@@ -58,7 +59,7 @@ class AuthController extends Controller
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
         $user->save();
 
@@ -78,6 +79,7 @@ class AuthController extends Controller
     /* #region Auth login */
     /**
      * login by email and password
+     *
      *  @OA\POST(
      *      path="/api/v1/login",
      *      tags={"V1/Auth"},
@@ -106,10 +108,11 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
         $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
+        if (! Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized',
             ], 401);
+        }
         $user = $request->user();
         $accessToken = $user->createAuthToken('auth');
         $refreshToken = $user->createRefreshToken('refresh');
@@ -127,6 +130,7 @@ class AuthController extends Controller
     /* #region Clean user all token by access token */
     /**
      * Clean user all token by access token
+     *
      *  @OA\POST(
      *      path="/api/v1/token-clear",
      *      tags={"V1/Auth"},
@@ -146,13 +150,14 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Successfully logged out all devices!'
+            'message' => 'Successfully logged out all devices!',
         ]);
     }
 
     /* #region use refresh token return new access token */
     /**
      * use refresh token return new access token, and clean old access token, need Bearer refresh token
+     *
      *  @OA\Get(
      *      path="/api/v1/refresh-token",
      *      tags={"V1/Auth"},
@@ -181,7 +186,7 @@ class AuthController extends Controller
                 'access_token_expires_at' => $accessToken->accessToken->expires_at,
                 'refresh_token' => $refreshToken->plainTextToken,
                 'refresh_token_expires_at' => $refreshToken->accessToken->expires_at,
-            ]
+            ],
         ];
 
         return response()->json($response, 200);

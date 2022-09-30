@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
@@ -32,7 +32,7 @@ class UpdateUserRequest extends FormRequest
             'mobile_country_code' => ['required', 'string', 'min:1', 'max:4'],
             'mobile_country_calling_code' => ['required', 'string', 'min:1', 'max:5'],
             'mobile' => ['required', 'string', 'min:8', 'max:20', Rule::unique('users', 'mobile')->ignore($this->user)],
-            'full_name' => 'required|string|max:255', 
+            'full_name' => 'required|string|max:255',
         ];
     }
 

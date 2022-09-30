@@ -3,13 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\EmergencyContact;
+use App\Models\Organization;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserProfile;
-use App\Models\Organization;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
@@ -29,7 +29,7 @@ class UserFactory extends Factory
     {
         return [
             'custom_id' => $this->faker->numerify('7E####'),
-            'name' => Str::random(5).$this->faker->numerify('####'),
+            'name' => Str::random(5) . $this->faker->numerify('####'),
             'full_name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -69,7 +69,7 @@ class UserFactory extends Factory
         return $this->has(
             Team::factory()
                 ->state(function (array $attributes, User $user) {
-                    return ['name' => $user->name.'\'s Team', 'user_id' => $user->id, 'personal_team' => true];
+                    return ['name' => $user->name . '\'s Team', 'user_id' => $user->id, 'personal_team' => true];
                 }),
             'ownedTeams'
         );

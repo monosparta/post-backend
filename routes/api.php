@@ -1,13 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\V1\AuthController;
-use App\Http\Controllers\EnumerateController;
-use App\Http\Controllers\LineBotMsgController;
-use App\Http\Controllers\UserCategoryController;
-use App\Http\Controllers\EnumerateItemController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +20,6 @@ use App\Http\Controllers\EnumerateItemController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
 
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);

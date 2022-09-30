@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserCategoryResource;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
-use App\Http\Resources\UserCategoryResource;
 
 class UserCategoryController extends Controller
 {
     /* #region get user categories */
     /**
      * Display all users categories.
+     *
      *  @OA\Get(
      *      path="/api/users/categories",
      *      parameters={
@@ -37,6 +38,7 @@ class UserCategoryController extends Controller
      *          @OA\JsonContent()
      *      ),
      *  )
+     *
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
@@ -48,18 +50,21 @@ class UserCategoryController extends Controller
         });
 
         if ($request->has('paginate') && $request->paginate != null) {
-            $paginate= $request->paginate ? intval($request->paginate, 10) : 10;
+            $paginate = $request->paginate ? intval($request->paginate, 10) : 10;
             $userCategories = $userCategories->paginate($paginate);
             $userCategories = UserCategoryResource::collection($userCategories)->response()->getData(true);
         } else {
             $userCategories = $userCategories->get();
             $userCategories = UserCategoryResource::collection($userCategories);
         }
+
         return response()->json($userCategories);
     }
+
     /* #region create new user category */
     /**
      * Create new user category.
+     *
      *  @OA\POST(
      *      path="/api/users/categories",
      *      tags={"UserCategory"},
@@ -91,12 +96,14 @@ class UserCategoryController extends Controller
         $userCategory = UserCategory::create([
             'name' => $request->name,
         ]);
+
         return new UserCategoryResource($userCategory);
     }
 
     /* #region find user category */
     /**
      * Display Category
+     *
      * @OA\Get(
      *     tags={"UserCategory"},
      *     path="/api/users/categories/{id}",
@@ -114,6 +121,7 @@ class UserCategoryController extends Controller
      *     @OA\Response(response=404, description="Not Found"),
      * )
 
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -121,12 +129,14 @@ class UserCategoryController extends Controller
     public function show($id)
     {
         $userCategory = UserCategory::findOrFail($id);
+
         return new UserCategoryResource($userCategory);
     }
 
     /* #region update user category */
     /**
      * Update the User Category name.
+     *
      * @OA\Put(
      *     tags={"UserCategory"},
      *     path="/api/users/categories/{id}",
@@ -167,12 +177,14 @@ class UserCategoryController extends Controller
         $userCategory->update([
             'name' => $request->name,
         ]);
+
         return new UserCategoryResource($userCategory);
     }
 
     /* #region delete user category */
     /**
      * Remove User Category.
+     *
      * @OA\Delete(
      *     tags={"UserCategory"},
      *     path="/api/users/categories/{id}",
@@ -190,6 +202,7 @@ class UserCategoryController extends Controller
      *     @OA\Response(response=404, description="Not Found"),
      *     @OA\Response(response=406, description="Only Accept application/json"),
      * )
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -198,6 +211,7 @@ class UserCategoryController extends Controller
     {
         $userCategory = UserCategory::findOrFail($id);
         $userCategory->delete();
+
         return response()->noContent();
     }
 }

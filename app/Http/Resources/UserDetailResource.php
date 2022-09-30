@@ -27,7 +27,7 @@ class UserDetailResource extends JsonResource
                 'email_verify' => $this->email_verified_at ? true : false,
                 'mobile_verify' => false,
             ],
-            'profile' => $this->profile ? new UserProfileResource($this) : null, 
+            'profile' => $this->profile ? new UserProfileResource($this) : null,
             'organization' => $this->organization ? new OrganizationResource($this->organization) : null,
             'emergency_contact' => $this->emergencyContacts ? new EmergencyContactsResource($this->emergencyContacts[0]) : null,
         ];

@@ -27,7 +27,7 @@ class UserProfile extends Model
         'phone_country_calling_code',
         'phone',
         'nationality',
-        'identity_code'
+        'identity_code',
     ];
 
     /**
@@ -39,11 +39,13 @@ class UserProfile extends Model
         'birth_date' => 'date',
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function address() {
+    public function address()
+    {
         return $this->morphOne(Address::class, 'addressable');
     }
 }

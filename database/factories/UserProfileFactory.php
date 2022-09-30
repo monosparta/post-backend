@@ -19,6 +19,7 @@ class UserProfileFactory extends Factory
     {
         $userId = User::all()->random()->id;
         $user = User::find($userId);
+
         return [
             'user_id' => $userId,
             'first_name' => explode(' ', $user->full_name)[0],

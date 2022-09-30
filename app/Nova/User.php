@@ -2,22 +2,17 @@
 
 namespace App\Nova;
 
-
-use Laravel\Nova\Fields\ID;
-
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasOne;
-use Illuminate\Validation\Rules;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Gravatar;
-use Laravel\Nova\Fields\Password;
-
 use App\Nova\Lenses\MostValuableUsers;
-
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
-
+use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\HasOneThrough;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class User extends Resource
@@ -73,7 +68,7 @@ class User extends Resource
             Text::make('Mobile Country Code')->hideFromIndex(),
 
             Text::make('Mobile Country Calling Code'),
-            
+
             Text::make('Mobile'),
 
             Password::make('Password')

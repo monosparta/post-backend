@@ -3,8 +3,8 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\MorphTo;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Address extends Resource
@@ -46,9 +46,9 @@ class Address extends Resource
             // ID::make()->sortable(),
 
             Text::make('City'),
-            
+
             Text::make('Zip Code'),
-            
+
             Text::make('Region'),
 
             Text::make('Address Line 1'),

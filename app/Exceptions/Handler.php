@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
-use Throwable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
             return response()->json([
-                'error' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found'
+                'error' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
             ], 404);
         }
 

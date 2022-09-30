@@ -29,7 +29,7 @@ class UserEmergencyContact extends Resource
      * @var array
      */
     public static $search = [
-        'name', 'mobile'
+        'name', 'mobile',
     ];
 
     /**

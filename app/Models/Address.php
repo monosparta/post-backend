@@ -14,7 +14,7 @@ class Address extends Model
         'zip_code',
         'region',
         'address_line_1',
-        'address_line_2'
+        'address_line_2',
     ];
 
     public function addressable()
