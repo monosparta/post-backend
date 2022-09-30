@@ -8,7 +8,7 @@ Laravel 9 + Laravel Jetstream (Livewrie + Blade) + Laravel Nova
 
 ## PHP extension
 php 8
-- php-zip php-dom php-curl
+- php-zip php-dom php-curl php-mysql php-mbstring
 
 ## Project set up
 
@@ -61,6 +61,40 @@ generate api docs
 ```
 php artisan l5-swagger:generate
 ```
+
+## devcontainer docs
+
+enable mariadb
+```
+sudo service mariadb status
+sudo service mariadb start
+sudo mysql_secure_installation
+```
+follow [ubuntu install mariadb](https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-ubuntu-22-04#step-2-configuring-mariadb) to set mysql_secure_installation
+
+create database user and database
+```
+sudo mariadb
+GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+CREATE DATABASE monochrome;
+exit;
+```
+
+enable project git
+```
+git status
+git config --global --add safe.directory /workspaces/monochrome-server
+```
+
+disable git config autocrlf
+```
+git config --global --list
+git config --global core.autocrlf false
+git config --global core.editor vim
+```
+
+now, you can follow README.md set up
 
 ## License
 
