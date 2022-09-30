@@ -29,7 +29,7 @@ class UserDetailResource extends JsonResource
             ],
             'profile' => $this->profile ? new UserProfileResource($this) : null,
             'organization' => $this->organization ? new OrganizationResource($this->organization) : null,
-            'emergency_contact' => $this->emergencyContacts ? new EmergencyContactsResource($this->emergencyContacts[0]) : null,
+            'emergency_contact' => $this->emergencyContacts->count() > 0 ? new EmergencyContactsResource($this->emergencyContacts[0]) : null,
         ];
     }
 }
