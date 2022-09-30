@@ -96,12 +96,7 @@ class User extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            // new TotalUsers(),
-            // new NewUsers(),
-            // // new ActiveUsers(),
-            // (new CategoryUser()),
-        ];
+        return [];
     }
 
     /**
@@ -123,9 +118,7 @@ class User extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [
-            new MostValuableUsers(),
-        ];
+        return [];
     }
 
     /**
