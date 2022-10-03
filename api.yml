@@ -35,15 +35,31 @@ paths:
     post:
       tags:
         - post
-      summary: Add a new pet to the store
-      description: Add a new pet to the store
-      operationId: addPet
+      summary: Add a new Post
+      description: Add a new Post
+      operationId: addpost
       requestBody:
-        description: Create a new pet in the store
+        description: Create a new Post
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              items:
+                  # $ref: '#/components/schemas/Post'
+                  type: object
+                  properties:
+                    uuid: 
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    content:
+                      type: string   
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time    
         required: true
       responses:
         '200':
@@ -51,16 +67,48 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
+                items:
+                  # $ref: '#/components/schemas/Post'
+                  type: object
+                  properties:
+                    uuid: 
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    content:
+                      type: string   
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time              
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pet'
+                items:
+                  # $ref: '#/components/schemas/Post'
+                  type: object
+                  properties:
+                    uuid: 
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    content:
+                      type: string   
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time    
         '405':
           description: Invalid input
       security:
         - poststore_auth:
-            - write:pets
-            - read:pets
+            - write:Post
+            - read:Post
   /posts:
     get:
       tags:
