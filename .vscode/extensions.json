@@ -6,5 +6,7 @@
         "esbenp.prettier-vscode",
         "streetsidesoftware.code-spell-checker",
         "msamgan.laravel-pint-vscode",
+        "42Crunch.vscode-openapi",
+        "hediet.vscode-drawio"
     ]
 }
