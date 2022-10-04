@@ -50,9 +50,7 @@ paths:
         '405':
           description: Invalid input
       security:
-        - poststore_auth:
-            - write:pets
-            - read:pets
+        - bearerAuth: []
   /posts:
     get:
       tags:
@@ -85,9 +83,7 @@ paths:
         '400':
           description: Invalid status value
       security:
-        - poststore_auth:
-            - write:pets
-            - read:pets
+        - bearerAuth: []
   /post/{postId}:
     get:
       tags:
@@ -115,10 +111,7 @@ paths:
         '404':
           description: Pet not found
       security:
-        - api_key: []
-        - poststore_auth:
-            - write:pets
-            - read:pets
+        - bearerAuth: []
     put:
       tags:
         - post
@@ -149,9 +142,7 @@ paths:
         '405':
           description: Validation exception
       security:
-        - poststore_auth:
-            - write:pets
-            - read:pets
+        - bearerAuth: []
     delete:
       tags:
         - post
@@ -176,9 +167,7 @@ paths:
         '400':
           description: Invalid pet value
       security:
-        - poststore_auth:
-            - write:pets
-            - read:pets
+        - bearerAuth: []
  
 components:
   schemas:
@@ -226,15 +215,6 @@ components:
           schema:
             $ref: '#/components/schemas/PostRequest'
   securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    bearerAuth:
+      type: http
+      scheme: bearer
