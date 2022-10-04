@@ -1,7 +1,10 @@
 {
     "recommendations": [
+        "lokalise.i18n-ally",
+        "bmewburn.vscode-intelephense-client",
+        "maptz.regionfolder",
         "esbenp.prettier-vscode",
         "streetsidesoftware.code-spell-checker",
-        "msamgan.laravel-pint-vscode"
+        "msamgan.laravel-pint-vscode",
     ]
 }

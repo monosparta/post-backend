@@ -16,7 +16,10 @@
 				"mhutchie.git-graph",
 				"lokalise.i18n-ally",
 				"bmewburn.vscode-intelephense-client",
-				"maptz.regionfolder"
+				"maptz.regionfolder",
+				"esbenp.prettier-vscode",
+				"streetsidesoftware.code-spell-checker",
+				"msamgan.laravel-pint-vscode",
 			]
 		}
 	},
