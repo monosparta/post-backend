@@ -186,15 +186,9 @@ paths:
       tags:
         - post
       summary: Deletes a Post
-      description: delete a Post
+      description: Delete a Post
       operationId: deletePost
       parameters:
-        - name: title
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
         - name: uuid
           in: path
           description: Post id to delete
