@@ -39,11 +39,7 @@ paths:
       description: Add a new pet to the store
       operationId: addPet
       requestBody:
-        description: Create a new pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Post'
+        $ref: '#/components/requestBodies/AddPost'
         required: true
       responses:
         '200':
@@ -139,11 +135,7 @@ paths:
             type: integer
             format: int64
       requestBody:
-        description: Update an existent pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Post'
+        $ref: '#/components/requestBodies/ModifyPost'
         required: true
       responses:
         '200':
@@ -208,18 +200,31 @@ components:
         updatedAt:
           type: string
           format: date-time
+    PostRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
     GenericResponse:
       type: object
       properties:
         message:
           type: string
   requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
+    AddPost:
+      description: Post object to be added
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Post'
+            $ref: '#/components/schemas/PostRequest'
+    ModifyPost:
+      description: Post object to be modified
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostRequest'
   securitySchemes:
     petstore_auth:
       type: oauth2
