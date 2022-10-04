@@ -40,7 +40,6 @@ paths:
       operationId: addPet
       requestBody:
         $ref: '#/components/requestBodies/AddPost'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -136,7 +135,6 @@ paths:
             format: int64
       requestBody:
         $ref: '#/components/requestBodies/ModifyPost'
-        required: true
       responses:
         '200':
           description: Successful operation
@@ -215,12 +213,14 @@ components:
   requestBodies:
     AddPost:
       description: Post object to be added
+      required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PostRequest'
     ModifyPost:
       description: Post object to be modified
+      required: true
       content:
         application/json:
           schema:
