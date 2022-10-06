@@ -38,7 +38,7 @@ paths:
       summary: Add a new Post
       description: Add a new Post
       requestBody:
-        description: 建立文章，包含標題、內容、建立時間(Create an article, including title, content, creation time)
+        description: Create an article, including title, content, creation time
         content:
           application/json:
             schema:
@@ -55,7 +55,7 @@ paths:
         required: true
       responses:
         '201':
-          description: 成功建立(Successful Created)
+          description: Successful Created
           content:
             application/json:
               schema:
@@ -65,7 +65,7 @@ paths:
                     message:
                       type: string      
         '400':
-          description: 資料格式有誤(Incorrect format)
+          description: Incorrect format
           content:
             application/json:
               schema:
@@ -75,7 +75,7 @@ paths:
                   message:
                     type: string
         '500':
-          description: 伺服器錯誤(server error)
+          description: server error
           content:
             application/json:
               schema:
