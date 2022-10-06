@@ -1,23 +1,12 @@
 openapi: 3.0.3
 info:
-  title: Swagger Post - OpenAPI 3.0
+  title: Post API
   description: |-
-    This is an article module mainly based on the function of adding articles. Its pages include personal article pages, new article pages, edit article pages and other functional pages, allowing users to add and browse articles.
-  termsOfService: http://swagger.io/terms/
-  contact:
-    email: apiteam@swagger.io
-  version: 1.0.11
-externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
-servers:
-  - url: https://post.swagger.io/api
+    This is a simple post API, including creating, reading, updating and deleting posts.
+  version: 1.0.0
 tags:
   - name: post
     description: Everything about your post
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
 paths:
   /post:
     post:
