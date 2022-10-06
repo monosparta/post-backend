@@ -180,7 +180,7 @@ components:
         title:
           type: string
         content:
-          type: string   
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -194,6 +194,9 @@ components:
           type: string
         content:
           type: string
+        createdAt:
+          type: string
+          format: date-time
     GenericResponse:
       type: object
       properties:
