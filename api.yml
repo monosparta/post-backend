@@ -37,74 +37,53 @@ paths:
         - post
       summary: Add a new Post
       description: Add a new Post
-      operationId: addpost
       requestBody:
-        description: Create a new Post
+        description: 建立文章，包含標題、內容、建立時間(Create an article, including title, content, creation time)
         content:
           application/json:
             schema:
-              items:
-                  # $ref: '#/components/schemas/Post'
+            # $ref: '#/components/schemas/Post'
                   type: object
                   properties:
-                    uuid: 
-                      type: string
-                      format: uuid
                     title:
                       type: string
                     content:
-                      type: string   
-                    createdAt:
+                      type: string  
+                    createAt:
                       type: string
                       format: date-time
-                    updatedAt:
-                      type: string
-                      format: date-time    
         required: true
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: 成功建立(Successful Created)
           content:
             application/json:
               schema:
-                items:
-                  # $ref: '#/components/schemas/Post'
+                # $ref: '#/components/schemas/Post'
                   type: object
                   properties:
-                    uuid: 
-                      type: string
-                      format: uuid
-                    title:
-                      type: string
-                    content:
-                      type: string   
-                    createdAt:
-                      type: string
-                      format: date-time
-                    updatedAt:
-                      type: string
-                      format: date-time              
-            application/xml:
+                    message:
+                      type: string      
+        '400':
+          description: 資料格式有誤(Incorrect format)
+          content:
+            application/json:
               schema:
-                items:
-                  # $ref: '#/components/schemas/Post'
-                  type: object
-                  properties:
-                    uuid: 
-                      type: string
-                      format: uuid
-                    title:
-                      type: string
-                    content:
-                      type: string   
-                    createdAt:
-                      type: string
-                      format: date-time
-                    updatedAt:
-                      type: string
-                      format: date-time    
-        '405':
-          description: Invalid input
+                # $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: 伺服器錯誤(server error)
+          content:
+            application/json:
+              schema:
+                # $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  message:
+                    type: string
       security:
         - poststore_auth:
             - write:Post
