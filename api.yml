@@ -45,31 +45,19 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: '#/components/schemas/Post'
-                  type: object
-                  properties:
-                    message:
-                      type: string      
+                $ref: '#/components/schemas/GenericResponse'
         '400':
           description: Incorrect format
           content:
             application/json:
               schema:
-                # $ref: '#/components/schemas/Post'
-                type: object
-                properties:
-                  message:
-                    type: string
+                $ref: '#/components/schemas/GenericResponse'
         '500':
           description: server error
           content:
             application/json:
               schema:
-                # $ref: '#/components/schemas/Post'
-                type: object
-                properties:
-                  message:
-                    type: string
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
   /posts:
@@ -89,6 +77,10 @@ paths:
                   $ref: '#/components/schemas/Post'
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
   /post/{postId}:
