@@ -35,8 +35,8 @@ paths:
     post:
       tags:
         - post
-      summary: Add a new Post
-      description: Add a new Post
+      summary: Add a new post
+      description: Add a new post
       requestBody:
         $ref: '#/components/requestBodies/AddPost'
       responses:
@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/Post'
         '400':
           description: Incorrect format
           content:
@@ -173,17 +173,17 @@ components:
     Post:
       type: object
       properties:
-        uuid: 
+        id: 
           type: string
           format: uuid
         title:
           type: string
         content:
           type: string
-        createdAt:
+        created_at:
           type: string
           format: date-time
-        updatedAt:
+        updated_at:
           type: string
           format: date-time
     PostRequest:
@@ -193,9 +193,6 @@ components:
           type: string
         content:
           type: string
-        createdAt:
-          type: string
-          format: date-time
     GenericResponse:
       type: object
       properties:
