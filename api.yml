@@ -162,24 +162,30 @@ paths:
     delete:
       tags:
         - post
-      summary: Deletes a Post
-      description: Delete a Post
-      operationId: deletePost
+      summary: Deletes a pet
+      description: delete a pet
+      operationId: deletePet
       parameters:
-        - name: uuid
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: postId
           in: path
-          description: Post id to delete
+          description: Pet id to delete
           required: true
           schema:
             type: integer
             format: int64
       responses:
         '400':
-          description: Invalid Post value
+          description: Invalid pet value
       security:
         - poststore_auth:
-            - write:Post
-            - read:Post
+            - write:pets
+            - read:pets
  
 components:
   schemas:
