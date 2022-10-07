@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\V1\AuthController;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,3 +40,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('users/{user}/organization', [UserController::class, 'organization']);
     Route::post('users/{user}/emergency-contact', [UserController::class, 'emergencyContact']);
 });
+Route::apiResource('post', PostController::class);
