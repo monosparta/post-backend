@@ -35,32 +35,59 @@ paths:
     post:
       tags:
         - post
-      summary: Add a new pet to the store
-      description: Add a new pet to the store
-      operationId: addPet
+      summary: Add a new Post
+      description: Add a new Post
       requestBody:
-        description: Create a new pet in the store
+        description: Create an article, including title, content, creation time
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+            # $ref: '#/components/schemas/Post'
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    content:
+                      type: string  
+                    createAt:
+                      type: string
+                      format: date-time
         required: true
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: Successful Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
+                # $ref: '#/components/schemas/Post'
+                  type: object
+                  properties:
+                    message:
+                      type: string      
+        '400':
+          description: Incorrect format
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
-        '405':
-          description: Invalid input
+                # $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: server error
+          content:
+            application/json:
+              schema:
+                # $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  message:
+                    type: string
       security:
         - poststore_auth:
-            - write:pets
-            - read:pets
+            - write:Post
+            - read:Post
   /posts:
     get:
       tags:
