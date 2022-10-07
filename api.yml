@@ -67,7 +67,6 @@ paths:
         - post
       summary: Get all posts
       description: Get all posts ordered by created date
-      operationId: '#'
       responses:
         '200':
           description: successful operation & a list of posts
