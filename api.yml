@@ -40,8 +40,8 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/AddPost'
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: Successful Created
           content:
             application/json:
               schema:
