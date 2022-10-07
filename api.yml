@@ -35,8 +35,8 @@ paths:
     post:
       tags:
         - post
-      summary: Add a new post
-      description: Add a new post
+      summary: Add a new Post
+      description: Add a new Post
       requestBody:
         $ref: '#/components/requestBodies/AddPost'
       responses:
@@ -64,11 +64,11 @@ paths:
     get:
       tags:
         - post
-      summary: Get all posts
-      description: Get all posts ordered by created date
+      summary: Get all Posts
+      description: Get all Posts ordered by created date
       responses:
         '200':
-          description: successful operation & a list of posts
+          description: successful operation & a list of Posts
           content:
             application/json:
               schema:
