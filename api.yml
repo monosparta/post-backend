@@ -87,13 +87,12 @@ paths:
     get:
       tags:
         - post
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
+      summary: Find Post by ID
+      description: Returns a single Post
       parameters:
         - name: postId
           in: path
-          description: ID of pet to return
+          description: ID of Post to return
           required: true
           schema:
             type: integer
@@ -105,10 +104,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        '400':
-          description: Invalid ID supplied
         '404':
-          description: Pet not found
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
     put:

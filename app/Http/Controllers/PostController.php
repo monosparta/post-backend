@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
@@ -14,7 +15,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $Post=Post::all();
+        return response()->json($Post);
+        
     }
 
     /**
@@ -35,8 +38,18 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $Post = Post::create($request->all());
-        return response()->json($Post);
+        try {
+            $validResult = $request->validate([
+                "title" => "required|string",
+                "content" => "required|string"
+            ]);
+            $Post = Post::create($request->all());
+            return response()->json($Post,201);
+        } catch (ValidationException $exception) {
+            $errorMessage =
+                $exception->validator->getMessageBag()->getMessages();
+                return response()->json(['message'=>"incorrent format"],400);
+        }
     }
 
     /**
@@ -47,7 +60,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return response()->json($post);
+        // return response(['Message'=>'Post not found'], 404);
     }
 
     /**

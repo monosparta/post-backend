@@ -62,9 +62,12 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
             return response()->json([
-                'error' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
+                'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
             ], 404);
         }
+        return response()->json([
+            'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' server error',
+        ], 500);
 
         return parent::render($request, $e);
     }
