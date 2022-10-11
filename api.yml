@@ -163,6 +163,14 @@ components:
         updated_at:
           type: string
           format: date-time
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
     PostRequest:
       type: object
       properties:
@@ -170,6 +178,9 @@ components:
           type: string
         content:
           type: string
+        user_id:
+          type: string
+          format: uuid
     GenericResponse:
       type: object
       properties:
