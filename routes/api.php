@@ -40,9 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('users/{user}/organization', [UserController::class, 'organization']);
     Route::post('users/{user}/emergency-contact', [UserController::class, 'emergencyContact']);
 });
-// Route::get('/stores',[StoreController::class,'index']);
-// Route::post('/post',[StoreController::class,'store']);//c
-// Route::get('/stores/{store}',[StoreController::class,'show']);//r
-// Route::put('/stores/{store}',[StoreController::class,'update']);//u
-// Route::delete('/stores/{store}',[StoreController::class,'destroy']);//d
-Route::apiResource('post', PostController::class);
+Route::get('/posts',[PostController::class,'index']);
+Route::post('/post',[PostController::class,'store']);//c
+Route::get('/post/{post}',[PostController::class,'show']);//r
+Route::put('/post/{post}',[PostController::class,'update']);//u
+Route::delete('/post/{post}',[PostController::class,'destroy']);//d
+
+ //Route::apiResource('post', PostController::class);
