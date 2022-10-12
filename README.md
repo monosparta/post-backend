@@ -84,7 +84,7 @@ exit;
 enable project git
 ```
 git status
-git config --global --add safe.directory /workspaces/monochrome-server
+git config --global --add safe.directory /workspaces/post-backend
 ```
 
 disable git config autocrlf

@@ -18,6 +18,9 @@ RUN apt install -y mariadb-server && systemctl enable mariadb
 # RUN mariadb -u root -e "FLUSH PRIVILEGES;"
 # RUN mariadb -u root -e "CREATE DATABASE IF NOT EXISTS monochrome;"
 
+# install node.js
+RUN sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && apt -y install nodejs
+
 EXPOSE 8000
 
 
