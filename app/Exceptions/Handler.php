@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -66,9 +67,9 @@ class Handler extends ExceptionHandler
             ], 404);
         }
         return response()->json([
-            'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' server error',
+            'message' => 'Internal server error',
         ], 500);
 
-        return parent::render($request, $e);
+        // return parent::render($request, $e);
     }
 }

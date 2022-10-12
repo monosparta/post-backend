@@ -87,6 +87,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
     put:

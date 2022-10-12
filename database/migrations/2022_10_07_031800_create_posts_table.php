@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('title');
-            $table->string('content');
+            $table->string('content',10000);
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
