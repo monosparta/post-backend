@@ -1,7 +1,13 @@
 {
     "recommendations": [
+        "lokalise.i18n-ally",
+        "bmewburn.vscode-intelephense-client",
+        "MehediDracula.php-namespace-resolver",
+        "maptz.regionfolder",
         "esbenp.prettier-vscode",
         "streetsidesoftware.code-spell-checker",
-        "msamgan.laravel-pint-vscode"
+        "msamgan.laravel-pint-vscode",
+        "42Crunch.vscode-openapi",
+        "hediet.vscode-drawio"
     ]
 }
