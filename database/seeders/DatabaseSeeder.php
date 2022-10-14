@@ -21,9 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TeamSeeder::class,
             UserCategorySeeder::class,
-            AdminUserSeeder::class,
-            
-            CommentSeeder::class,
+            AdminUserSeeder::class
         ]);
     }
 }

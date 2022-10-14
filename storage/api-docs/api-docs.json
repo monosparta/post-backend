@@ -6,29 +6,904 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/users/categories": {
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "register by email and password",
+                "operationId": "bae4149a64d20c50fc45569fc97d6969",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test@example.com"
+                                    },
+                                    "password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    },
+                                    "confirm_password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "login by email and password",
+                "operationId": "65ec5a91d2a0f055922ac67974dc9812",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "default": "test@example.com"
+                                    },
+                                    "password": {
+                                        "type": "password",
+                                        "default": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/token-clear": {
+            "post": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "Clean user all token by access token.",
+                "operationId": "1c8d3bc893d44af5e33f1488ef723a76",
+                "responses": {
+                    "200": {
+                        "description": "Login success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/refresh-token": {
+            "get": {
+                "tags": [
+                    "V1/Auth"
+                ],
+                "summary": "use refresh token return new access token, and clean old access token, need Bearer refresh token.",
+                "operationId": "0e7ae9ae8522ccb753af94b872d59b85",
+                "responses": {
+                    "200": {
+                        "description": "Login success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate": {
+            "get": {
+                "tags": [
+                    "Enumerate"
+                ],
+                "summary": "Display all enumerate",
+                "operationId": "123114d4de7d2836ab965368ac5372aa",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Enumerate"
+                ],
+                "summary": "Create new enumerate.",
+                "operationId": "a43cd57ed72f49305704deb9cf1c25f4",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreEnumerateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate/index": {
+            "post": {
+                "tags": [
+                    "Enumerate"
+                ],
+                "summary": "Datatable enumerate",
+                "operationId": "5e89c146b9fe69c3c7253b385d917c08",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FilterServiceParams"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate/{enumerate}": {
+            "get": {
+                "tags": [
+                    "Enumerate"
+                ],
+                "summary": "Display Enumerate",
+                "operationId": "b698b9bc300cb16def55274b3e335f3e",
+                "parameters": [
+                    {
+                        "name": "enumerate",
+                        "in": "path",
+                        "description": "Enumerate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Enumerate"
+                ],
+                "summary": "Update the Enumerate.",
+                "operationId": "a224e977bede96b50e25835df8f54976",
+                "parameters": [
+                    {
+                        "name": "enumerate",
+                        "in": "path",
+                        "description": "Enumerate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEnumerateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EnumerateResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Enumerate"
+                ],
+                "summary": "Remove Enumerate.",
+                "operationId": "2c4801b4a70af59dfa0d7d231206e46b",
+                "parameters": [
+                    {
+                        "name": "enumerate",
+                        "in": "path",
+                        "description": "Enumerate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate/url": {
+            "get": {
+                "tags": [
+                    "Enumerate Dropdown"
+                ],
+                "summary": "Display all enumerate name and url.",
+                "operationId": "118e1d0026b65dc67f1eff0cfef1ea8d",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate/{enumerateName}/items": {
+            "get": {
+                "tags": [
+                    "Enumerate Dropdown"
+                ],
+                "summary": "Drop down enumerate by enumerate name.",
+                "operationId": "f9c6086c5d12ba6b1debcf59eff03173",
+                "parameters": [
+                    {
+                        "name": "enumerateName",
+                        "in": "path",
+                        "description": "Enumerate Name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "cities"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate/{enumerate}/enumerateItems": {
+            "get": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Display Enumerate Items by Enumerate id",
+                "operationId": "3ed7f1ff25c1cb54ab13d2d7c1868025",
+                "parameters": [
+                    {
+                        "name": "enumerate",
+                        "in": "path",
+                        "description": "Enumerate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Create new Enumerate Items by Enumerate id.",
+                "operationId": "1418207e06da81b6846302882606feea",
+                "parameters": [
+                    {
+                        "name": "enumerate",
+                        "in": "path",
+                        "description": "Enumerate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreOrUpdateEnumerateItemsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerate/{enumerate}/enumerateItems/index": {
+            "post": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Datatable Enumerate Items by Enumerate id",
+                "operationId": "667d07b49432b0e56475ec7525a9f313",
+                "parameters": [
+                    {
+                        "name": "enumerate",
+                        "in": "path",
+                        "description": "Enumerate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FilterServiceParams"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerateItems/{enumerateItem}": {
+            "get": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Display Enumerate Item by Enumerate Item id.",
+                "operationId": "bbc53dd37db94533e05399b27eb10cbe",
+                "parameters": [
+                    {
+                        "name": "enumerateItem",
+                        "in": "path",
+                        "description": "Enumerate Item ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EnumerateItemResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Update the Enumerate Item.",
+                "operationId": "01a313e46a69494cfcc8462f38c65c24",
+                "parameters": [
+                    {
+                        "name": "enumerateItem",
+                        "in": "path",
+                        "description": "EnumerateItem ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreOrUpdateEnumerateItemsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Remove Enumerate Item",
+                "operationId": "463eb578b7ff03a4b67aa72e46884f77",
+                "parameters": [
+                    {
+                        "name": "enumerateItem",
+                        "in": "path",
+                        "description": "EnumerateItem ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerateItems/{enumerateItem}/default": {
+            "patch": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Set Enumerate default value",
+                "operationId": "fd93cda2fa9f6de78db232d63e7fc58c",
+                "parameters": [
+                    {
+                        "name": "enumerateItem",
+                        "in": "path",
+                        "description": "EnumerateItem ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerateItems/{enumerateItem}/sequence/up": {
+            "patch": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Up Enumerate Item sequence value",
+                "operationId": "7b3ff730e0d5f13ebde4c893c7b6741b",
+                "parameters": [
+                    {
+                        "name": "enumerateItem",
+                        "in": "path",
+                        "description": "EnumerateItem ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/enumerateItems/{enumerateItem}/sequence/down": {
+            "patch": {
+                "tags": [
+                    "EnumerateItem"
+                ],
+                "summary": "Down Enumerate Item sequence value",
+                "operationId": "5b4d6f364e8b8309dae38a53eb854118",
+                "parameters": [
+                    {
+                        "name": "enumerateItem",
+                        "in": "path",
+                        "description": "EnumerateItem ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "description": "Only Accept application/json"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/userCategories": {
             "get": {
                 "tags": [
                     "UserCategory"
                 ],
                 "summary": "Display all users categories.",
-                "operationId": "9f1e34fea5cfdce8c144d678fcff613a",
-                "parameters": [
-                    {
-                        "name": "paginate",
-                        "in": "query",
-                        "description": "Number of users per page, default is 10",
-                        "required": false,
-                        "example": "10"
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "description": "Filter userCategory by type name",
-                        "required": false,
-                        "example": ""
-                    }
-                ],
+                "operationId": "18758f7448a8a30d7e0def859fbfbf71",
                 "responses": {
                     "200": {
                         "description": "success",
@@ -50,7 +925,7 @@
                     "UserCategory"
                 ],
                 "summary": "Create new user category.",
-                "operationId": "b4ea18082958df206b71081a1dd95c94",
+                "operationId": "79f04a80d5c80d1f3625852af1c24e08",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -58,7 +933,7 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "default": ""
+                                        "default": "test"
                                     }
                                 },
                                 "type": "object"
@@ -95,16 +970,50 @@
                 ]
             }
         },
-        "/api/users/categories/{id}": {
+        "/api/userCategories/index": {
+            "post": {
+                "tags": [
+                    "UserCategory"
+                ],
+                "summary": "Datatable categories.",
+                "operationId": "4e986182856a7c99bd1756ea4c46a242",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FilterServiceParams"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/userCategories/{userCategory}": {
             "get": {
                 "tags": [
                     "UserCategory"
                 ],
                 "summary": "Display Category",
-                "operationId": "90be3f908ffd971f4b63fc9c00e4d189",
+                "operationId": "437476832f47f25a86e302de7b9af4aa",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "userCategory",
                         "in": "path",
                         "description": "UserCategory ID",
                         "required": true,
@@ -143,10 +1052,10 @@
                     "UserCategory"
                 ],
                 "summary": "Update the User Category name.",
-                "operationId": "15d7e5797fa24c9a29d53233ab72e3cf",
+                "operationId": "2035940f22f0db2669ded9aaebdca645",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "userCategory",
                         "in": "path",
                         "description": "UserCategory ID",
                         "required": true,
@@ -203,10 +1112,10 @@
                     "UserCategory"
                 ],
                 "summary": "Remove User Category.",
-                "operationId": "2a33cbf1ff43f5e57a4d24d38fc40b73",
+                "operationId": "dba48fab3855995a0f4619417ab033b6",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "userCategory",
                         "in": "path",
                         "description": "UserCategory ID",
                         "required": true,
@@ -249,24 +1158,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Paginate all users",
+                "summary": "get 10 user",
                 "operationId": "c457726701591d1183b53aa71fc13441",
-                "parameters": [
-                    {
-                        "name": "paginate",
-                        "in": "query",
-                        "description": "Number of users per page",
-                        "required": false,
-                        "example": "10"
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "description": "Filter users by name or email or mobile",
-                        "required": false,
-                        "example": ""
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "success",
@@ -365,16 +1258,50 @@
                 ]
             }
         },
-        "/api/users/{id}": {
+        "/api/users/index": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "datatable for users",
+                "operationId": "be55c819ad477dd327b49c30a0d9db32",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FilterServiceParams"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{user}": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Display User by user id",
-                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "operationId": "d3a14968f8b7a072620c75c7c78ed6f8",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "description": "User ID",
                         "required": true,
@@ -405,10 +1332,10 @@
                     "Users"
                 ],
                 "summary": "Update User info by user id",
-                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "operationId": "e29fc231c7937ab09483d35e6e3d1214",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "description": "User ID",
                         "required": true,
@@ -474,10 +1401,10 @@
                     "Users"
                 ],
                 "summary": "Delete User by user id",
-                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "operationId": "e0f9a385a1d6788b99e519bd98cf7239",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "description": "User ID",
                         "required": true,
@@ -504,16 +1431,16 @@
                 ]
             }
         },
-        "/api/users/{id}/profile": {
+        "/api/users/{user}/profile": {
             "post": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Create/Update the User profile by user id",
-                "operationId": "be160285acc78893a8db3ed0f9a6d8c9",
+                "operationId": "47287b79caa9f43c89e8c328339e8a0e",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "description": "User ID",
                         "required": true,
@@ -641,16 +1568,16 @@
                 ]
             }
         },
-        "/api/users/{id}/organization": {
+        "/api/users/{user}/organization": {
             "post": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Create/Update the User Organization by user id",
-                "operationId": "2d458465a7f2faf095cc87eaab88ceaa",
+                "operationId": "515e7497f368e5b86b368b9482d6dddb",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "description": "User ID",
                         "required": true,
@@ -752,16 +1679,16 @@
                 ]
             }
         },
-        "/api/users/{id}/emergency-contact": {
+        "/api/users/{user}/emergency-contact": {
             "post": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Create/Update the User Emergency Contact by user id",
-                "operationId": "e78aef4e36ae091814960abf48ed1744",
+                "operationId": "1d03e09cfdcbd1f7d3251511067e49f7",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "description": "User ID",
                         "required": true,
@@ -827,75 +1754,33 @@
                 ]
             }
         },
-        "/api/v1/register": {
+        "/api/users/{user}/note": {
             "post": {
                 "tags": [
-                    "V1/Auth"
+                    "Users"
                 ],
-                "summary": "register by email and password",
-                "operationId": "6795f2f85dc8207154329e145be90507",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "default": "test@example.com"
-                                    },
-                                    "password": {
-                                        "type": "password",
-                                        "default": "password"
-                                    },
-                                    "confirm_password": {
-                                        "type": "password",
-                                        "default": "password"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Register success",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
+                "summary": "Create/Update the User Note by user id",
+                "operationId": "2c918f9e1529890d098e6f50d82fa23b",
+                "parameters": [
                     {
-                        "sanctum": []
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ffffffff-ffff-ffff-ffff-ffffffffffff"
                     }
-                ]
-            }
-        },
-        "/api/v1/login": {
-            "post": {
-                "tags": [
-                    "V1/Auth"
                 ],
-                "summary": "login by email and password",
-                "operationId": "45bde25b97150f3e175435ff049d7ed1",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "email": {
+                                    "note": {
                                         "type": "string",
-                                        "default": "test@example.com"
-                                    },
-                                    "password": {
-                                        "type": "password",
-                                        "default": "password"
+                                        "default": "測試"
                                     }
                                 },
                                 "type": "object"
@@ -905,7 +1790,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login success",
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -914,6 +1799,15 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
                     }
                 },
                 "security": [
@@ -922,59 +1816,203 @@
                     }
                 ]
             }
-        },
-        "/api/v1/token-clear": {
-            "post": {
-                "tags": [
-                    "V1/Auth"
-                ],
-                "summary": "Clean user all token by access token",
-                "operationId": "c9d4f76c3cea6f356f08ea4ffb08066f",
-                "responses": {
-                    "200": {
-                        "description": "Login success",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreEnumerateRequest": {
+                "properties": {
+                    "name": {
+                        "description": "i18n Name of enumerate",
+                        "type": "string",
+                        "example": "test"
                     },
-                    "401": {
-                        "description": "Unauthorized"
+                    "title": {
+                        "description": "Title of enumerate",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "is_enabled": {
+                        "description": "Is enabled of enumerate",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "enumerate_items": {
+                        "description": "CSV string of enumerate items",
+                        "type": "string",
+                        "example": "taiwan,台灣,TW,TWN,158,true,1\\nhongkong,香港,HK,HKG,344,true,2"
                     }
                 },
-                "security": [
-                    {
-                        "sanctum": []
+                "type": "object"
+            },
+            "StoreOrUpdateEnumerateItemsRequest": {
+                "properties": {
+                    "name": {
+                        "description": "i18n Name of enumerate item",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "title": {
+                        "description": "Title of enumerate item",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "value": {
+                        "description": "Value of enumerate item",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "value_alt": {
+                        "description": "Value alt of enumerate item",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "value_alt_2": {
+                        "description": "Value alt 2 of enumerate item",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "sequence": {
+                        "description": "Custom index of enumerate item",
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "is_enabled": {
+                        "description": "Is enabled of enumerate item",
+                        "type": "boolean",
+                        "example": "true"
                     }
-                ]
+                },
+                "type": "object"
+            },
+            "UpdateEnumerateRequest": {
+                "properties": {
+                    "name": {
+                        "description": "i18n Name of enumerate",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "title": {
+                        "description": "Title of enumerate",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "is_enabled": {
+                        "description": "Is enabled of enumerate",
+                        "type": "boolean",
+                        "example": "true"
+                    }
+                },
+                "type": "object"
+            },
+            "EnumerateItemResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "enumerate_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "value": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "value_alt": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "value_alt_2": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "sequence": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "is_enabled": {
+                        "type": "boolean",
+                        "example": "true"
+                    }
+                },
+                "type": "object"
+            },
+            "EnumerateResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "default_value": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "is_enabled": {
+                        "type": "boolean",
+                        "example": "true"
+                    }
+                },
+                "type": "object"
+            },
+            "FilterServiceParams": {
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "sorts": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "example": {
+                                "field": "id",
+                                "order": "asc"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
             }
         },
-        "/api/v1/refresh-token": {
-            "get": {
-                "tags": [
-                    "V1/Auth"
-                ],
-                "summary": "use refresh token return new access token, and clean old access token, need Bearer refresh token",
-                "operationId": "0f8c0a1361814df16895be8c27cf865f",
-                "responses": {
-                    "200": {
-                        "description": "Login success",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },
@@ -988,6 +2026,14 @@
             "description": "Enumerate of drop down list"
         },
         {
+            "name": "Enumerate",
+            "description": "Admin CRUD Enumerate"
+        },
+        {
+            "name": "EnumerateItem",
+            "description": "Admin CRUD Enumerate Item"
+        },
+        {
             "name": "Users",
             "description": "Admin CRUD User"
         },
@@ -996,18 +2042,8 @@
             "description": "Admin CRUD UserCategory"
         },
         {
-            "name": "LineBot",
-            "description": "API Endpoints of LineBot of Message"
+            "name": "Bulletin Board",
+            "description": "API Endpoints of Bulletin Comment"
         }
-    ],
-    "components": {
-        "securitySchemes": {
-            "sanctum": {
-                "type": "apiKey",
-                "description": "Enter token in format (Bearer <token>)",
-                "name": "Authorization",
-                "in": "header"
-            }
-        }
-    }
+    ]
 }
