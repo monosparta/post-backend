@@ -3,9 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Organization extends Resource
@@ -30,7 +30,7 @@ class Organization extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'name'
     ];
 
     /**
@@ -43,7 +43,7 @@ class Organization extends Resource
     {
         return [
             // ID::make()->sortable(),
-
+            
             BelongsTo::make('User'),
 
             MorphOne::make('Address'),

@@ -20,6 +20,7 @@
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
+        "aphisitworachorch/kacher": "dev-master",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.2",
         "laravel/sail": "^1.0.1",

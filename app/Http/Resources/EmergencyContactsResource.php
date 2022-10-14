@@ -18,7 +18,7 @@ class EmergencyContactsResource extends JsonResource
             'name' => $this->name,
             'mobile_country_code' => $this->mobile_country_code,
             'mobile_country_calling_code' => $this->mobile_country_calling_code,
-            'mobile' => $this->mobile,
+            'mobile' => $this->mobile
         ];
     }
 }

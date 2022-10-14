@@ -2,37 +2,37 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Prettus\Validator\Exceptions\ValidatorException;
+use Laravel\Passport\Exceptions\OAuthServerException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of exception types with their corresponding custom log levels.
-     *
-     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
-     */
-    protected $levels = [
-        //
-    ];
-
-    /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<\Throwable>>
+     * @var array
      */
     protected $dontReport = [
-        //
+
     ];
 
     /**
-     * A list of the inputs that are never flashed to the session on validation exceptions.
+     * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $dontFlash = [
-        'current_password',
         'password',
         'password_confirmation',
     ];
@@ -44,28 +44,188 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (QueryException $exception, $request) {
+            \Log::error('=== QueryException ===');
+            \Log::error($exception->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 500,
+                'errorCode' => 0,
+                'message' => 'Server Error',
+            ], 500);
         });
+
+        $this->renderable(function (ModelNotFoundException $exception, $request) {
+            \Log::error('=== ModelNotFoundException ===');
+            \Log::error($exception->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 404,
+                'errorCode' => 0,
+                'message' => 'Server Error',
+            ], 404);
+        });
+
+        $this->renderable(function (NotFoundHttpException $exception, $request) {
+            \Log::error('=== NotFoundHttpException ===');
+            \Log::error($exception->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 404,
+                'errorCode' => 0,
+                'message' => 'Server Error',
+            ], 404);
+        });
+
+        $this->renderable(function (ValidationException $exception, $request) {
+            \Log::error('=== ValidatorException: The given data did not pass validation ===');
+            \Log::error($exception->errors());
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 400,
+                'errorCode' => 400,
+                'message' => __('clientResponse.badRequest.invalid_parameter'),
+                'errors' => $exception->errors(),
+            ], 400);
+        });
+
+        $this->renderable(function (ValidatorException $exception, $request) {
+            \Log::error('=== ValidatorException: The given data did not pass validation ===');
+            \Log::error($exception->getMessageBag());
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 400,
+                'errorCode' => 400,
+                'message' => __('clientResponse.badRequest.invalid_parameter'),
+                'errors' => $exception->getMessageBag(),
+            ], 400);
+        });
+
+        $this->renderable(function (UnauthorizedException $exception, $request) {
+            $message = $exception->getMessage() ?? __('clientResponse.account.login.error_unauthorized');
+            \Log::error('=== UnauthorizedException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 401,
+                'errorCode' => 0,
+                'message' => $message,
+            ], 401);
+        });
+
+        $this->renderable(function (AuthenticationException $exception, $request) {
+            $message = $exception->getMessage() ?? __('clientResponse.account.login.error_unauthorized');
+            \Log::error('=== AuthenticationException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 401,
+                'errorCode' => 0,
+                'message' => $message,
+            ], 401);
+        });
+
+        $this->renderable(function (AuthorizationException $exception, $request) {
+            $message = $exception->getMessage() ?? __('clientResponse.account.login.error_unauthorized');
+            \Log::error('=== AuthorizationException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 401,
+                'errorCode' => 0,
+                'message' => $message,
+            ], 401);
+        });
+
+        $this->renderable(function (OAuthServerException $exception, $request) {
+            $message = $exception->getMessage() ?? __('clientResponse.account.login.error_unauthorized');
+            \Log::error('=== OAuthServerException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 401,
+                'errorCode' => $exception->getCode(),
+                'message' => $message,
+            ], 401);
+        });
+
+        $this->renderable(function (HttpException $exception, $request) {
+            $message = $exception->getMessage();
+            if ('Your email address is not verified.' == $message) {
+                return response()->json([
+                    'success' => false,
+                    'statusCode' => 403,
+                    'errorCode' => 0,
+                    'message' => $message,
+                ], 403);
+            }
+        });
+
+        $this->renderable(function (BroadcastException $exception, $request) {
+            $message = $exception->getMessage();
+            \Log::error('=== BroadcastException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 500,
+                'errorCode' => 0,
+                'message' => $message,
+            ], 500);
+        });
+
+        $this->renderable(function (InvalidSignatureException $exception, $request) {
+            $message = $exception->getMessage();
+            \Log::error('=== InvalidSignatureException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 403,
+                'errorCode' => 0,
+                'message' => 'An exception class that is raised when signature is invalid.',
+            ], 403);
+        });
+
+        $this->renderable(function (InvalidEventRequestException $exception, $request) {
+            $message = $exception->getMessage();
+            \Log::error('=== InvalidEventRequestException ===');
+            \Log::error($message);
+
+            return response()->json([
+                'success' => false,
+                'statusCode' => 403,
+                'errorCode' => 0,
+                'message' => 'An exception class that is raised when received invalid event request.',
+            ], 403);
+        });
+    }
+
+    public function report(Throwable $exception)
+    {
+        parent::report($exception);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $e
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Throwable
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $exception)
     {
-        if ($e instanceof ModelNotFoundException) {
-            return response()->json([
-                'error' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
-            ], 404);
-        }
-
-        return parent::render($request, $e);
+        return parent::render($request, $exception);
     }
 }

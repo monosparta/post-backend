@@ -16,18 +16,18 @@ class UserSeeder extends Seeder
     {
         $test = User::factory()->create([
             'id' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
-            'name' => 'Guest',
-            'full_name' => 'Guest User',
+            'custom_id' => '7E0001',
+            'name' => 'Test User',
             'email' => 'test@example.com',
-            'mobile' => '905123456',
+            'mobile' => '905123456'
         ]);
 
         $test = User::factory()->create([
             'id' => '00000000-0000-0000-0000-000000000000',
-            'name' => 'John Doe',
-            'full_name' => 'Admin User',
+            'custom_id' => '7E0002',
+            'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'mobile' => '99000999',
+            'mobile' => '99000999'
         ]);
 
         User::factory(50)->create();

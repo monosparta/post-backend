@@ -27,9 +27,10 @@ class UserDetailResource extends JsonResource
                 'email_verify' => $this->email_verified_at ? true : false,
                 'mobile_verify' => false,
             ],
-            'profile' => $this->profile ? new UserProfileResource($this) : null,
+            'profile' => $this->profile ? new UserProfileResource($this) : null, 
             'organization' => $this->organization ? new OrganizationResource($this->organization) : null,
             'emergency_contact' => $this->emergencyContacts->count() > 0 ? new EmergencyContactsResource($this->emergencyContacts[0]) : null,
+            'note' => $this->profile ? $this->profile->note : null,
         ];
     }
 }

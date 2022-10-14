@@ -2,43 +2,17 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\AuthResource;
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
 class AuthController extends Controller
 {
-    /* #region Auth register */
-    /**
-     * register by email and password
-     *
-     *  @OA\POST(
-     *      path="/api/v1/register",
-     *      tags={"V1/Auth"},
-     *      security={{"sanctum":{}}},
-     *      @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *               @OA\Schema(
-     *                  @OA\Property(property="email", type="string", default="test@example.com"),
-     *                  @OA\Property(property="password", type="password", default="password"),
-     *                  @OA\Property(property="confirm_password", type="password", default="password"),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response(response=201, description="Register success", @OA\JsonContent()),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     * )
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /* #endregion */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -59,7 +33,7 @@ class AuthController extends Controller
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password)
         ]);
         $user->save();
 
@@ -76,31 +50,6 @@ class AuthController extends Controller
         return response(new AuthResource($response), 201);
     }
 
-    /* #region Auth login */
-    /**
-     * login by email and password
-     *
-     *  @OA\POST(
-     *      path="/api/v1/login",
-     *      tags={"V1/Auth"},
-     *      security={{"sanctum":{}}},
-     *      @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *               @OA\Schema(
-     *                  @OA\Property(property="email", type="string", default="test@example.com"),
-     *                  @OA\Property(property="password", type="password", default="password"),
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response(response=200, description="Login success", @OA\JsonContent()),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     * )
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /* #endregion */
     public function login(Request $request)
     {
         $request->validate([
@@ -108,11 +57,10 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
         $credentials = request(['email', 'password']);
-        if (! Auth::attempt($credentials)) {
+        if(!Auth::attempt($credentials))
             return response()->json([
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized'
             ], 401);
-        }
         $user = $request->user();
         $accessToken = $user->createAuthToken('auth');
         $refreshToken = $user->createRefreshToken('refresh');
@@ -127,22 +75,6 @@ class AuthController extends Controller
         return response(new AuthResource($response), 200);
     }
 
-    /* #region Clean user all token by access token */
-    /**
-     * Clean user all token by access token
-     *
-     *  @OA\POST(
-     *      path="/api/v1/token-clear",
-     *      tags={"V1/Auth"},
-     *      security={{"sanctum":{}}},
-     *     @OA\Response(response=200, description="Login success", @OA\JsonContent()),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     * )
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /* #endregion */
     public function cleanToken(Request $request)
     {
         if ($request->user()) {
@@ -150,26 +82,10 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Successfully logged out all devices!',
+            'message' => 'Successfully logged out all devices!'
         ]);
     }
 
-    /* #region use refresh token return new access token */
-    /**
-     * use refresh token return new access token, and clean old access token, need Bearer refresh token
-     *
-     *  @OA\Get(
-     *      path="/api/v1/refresh-token",
-     *      tags={"V1/Auth"},
-     *      security={{"sanctum":{}}},
-     *     @OA\Response(response=200, description="Login success", @OA\JsonContent()),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     * )
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /* #endregion */
     public function refreshToken(): JsonResponse
     {
         $user = Auth::user();
@@ -186,7 +102,7 @@ class AuthController extends Controller
                 'access_token_expires_at' => $accessToken->accessToken->expires_at,
                 'refresh_token' => $refreshToken->plainTextToken,
                 'refresh_token_expires_at' => $refreshToken->accessToken->expires_at,
-            ],
+            ]
         ];
 
         return response()->json($response, 200);

@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\UserCategoryController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\V1\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserCategoryController;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,20 +21,24 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('v1')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
+Route::prefix('v1')->middleware(['assign.guard:admin'])->group(function () {
+    Route::post('login', [AdminAuthController::class, 'login']);
+    Route::post('register', [AdminAuthController::class, 'register']);
 });
 
-Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-    Route::post('token-clear', [AuthController::class, 'cleanToken']);
-    Route::get('refresh-token', [AuthController::class, 'refreshToken'])->name('api.token.refresh');
+Route::prefix('v1')->middleware(['assign.guard:admin', 'auth:sanctum'])->group(function () {
+    Route::post('token-clear', [AdminAuthController::class, 'cleanToken']);
+    Route::get('refresh-token', [AdminAuthController::class, 'refreshToken'])->name('api.token.refresh');
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('users/categories', UserCategoryController::class);
+/* Member System */
+Route::middleware(['assign.guard:admin', 'auth:sanctum'])->group(function () {
+    Route::post('users/index', [UserController::class, 'datatable']);
+    Route::post('userCategories/index', [UserCategoryController::class, 'datatable']);
+    Route::apiResource('userCategories', UserCategoryController::class);
     Route::apiResource('users', UserController::class);
     Route::post('users/{user}/profile', [UserController::class, 'profile']);
     Route::post('users/{user}/organization', [UserController::class, 'organization']);
     Route::post('users/{user}/emergency-contact', [UserController::class, 'emergencyContact']);
+    Route::post('users/{user}/note', [UserController::class, 'note']);
 });

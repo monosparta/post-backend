@@ -20,7 +20,6 @@ class UserProfile extends Model
         'last_name',
         'middle_name',
         'birth_date',
-        'description',
         'job_title',
         'gender',
         'phone_country_code',
@@ -28,6 +27,7 @@ class UserProfile extends Model
         'phone',
         'nationality',
         'identity_code',
+        'note',
     ];
 
     /**
@@ -39,13 +39,11 @@ class UserProfile extends Model
         'birth_date' => 'date',
     ];
 
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function address()
-    {
+    public function address() {
         return $this->morphOne(Address::class, 'addressable');
     }
 }

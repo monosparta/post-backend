@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreOrUpdateUserProfileRequest extends FormRequest
@@ -27,12 +28,12 @@ class StoreOrUpdateUserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'categories.id' => 'sometimes|required|integer',
+            'categories.id' => 'filled|integer',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'middle_name' => 'nullable|string',
             'birth_date' => 'required|date',
-            'gender' => 'required|string',
+            'gender' => 'required|integer',
             'description' => 'nullable|string',
             'birth_date' => 'required|date',
             'job_title' => 'required|string|max:255',
@@ -41,9 +42,9 @@ class StoreOrUpdateUserProfileRequest extends FormRequest
             'phone' => 'nullable|string|min:8|max:20',
             'nationality' => 'required|string',
             'identity_code' => 'required|string',
-            'address.city' => 'sometimes|nullable|string',
-            'address.zip_code' => 'sometimes|nullable|string',
-            'address.region' => 'sometimes|nullable|string',
+            'address.city' => 'filled|nullable|string',
+            'address.zip_code' => 'filled|nullable|string',
+            'address.region' => 'filled|nullable|string',
             'address.address_line_1' => 'sometimes|nullable|string',
             'address.address_line_2' => 'sometimes|nullable|string',
         ];
