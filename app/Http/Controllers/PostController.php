@@ -22,7 +22,7 @@ class PostController extends Controller
             return [
                 'id' => $item->id,
                 'title' => $item->title,
-                'content' => substr($item->content, 0, 100),
+                'content' => substr($item->content, 0, 300),
                 'created_at' => $item->created_at,
                 'updated_at' => $item->updated_at,
                 'user' => [
