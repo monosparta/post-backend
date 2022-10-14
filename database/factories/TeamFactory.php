@@ -23,7 +23,6 @@ class TeamFactory extends Factory
     public function definition()
     {
         $user = User::where('email', 'test@example.com')->first();
-
         return [
             'name' => $this->faker->unique()->company(),
             'user_id' => $user->id,

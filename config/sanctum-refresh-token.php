@@ -1,5 +1,4 @@
 <?php
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -9,7 +8,7 @@ return [
     | This value controls the used refresh route name
     |
     */
-    'refresh_route_name' => 'api.token.refresh',
+      'refresh_route_name'      => 'api.token.refresh',
 
     /*
     |--------------------------------------------------------------------------
@@ -20,6 +19,6 @@ return [
     | considered expired.
     |
     */
-    'auth_token_expiration' => 10,
-    'refresh_token_expiration' => 120,
+     'auth_token_expiration'    => 10,
+     'refresh_token_expiration' => 120,
 ];

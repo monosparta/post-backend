@@ -2,75 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOrUpdateUserEmergencyContactRequest;
-use App\Http\Requests\StoreOrUpdateUserOrganizationRequest;
-use App\Http\Requests\StoreOrUpdateUserProfileRequest;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\EmergencyContactsResource;
-use App\Http\Resources\OrganizationResource;
-use App\Http\Resources\UserDetailResource;
-use App\Http\Resources\UserInfoResource;
-use App\Http\Resources\UserListResource;
-use App\Http\Resources\UserProfileResource;
 use App\Models\User;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserInfoResource;
+use App\Http\Resources\UserListResource;
+use App\Http\Resources\UserDetailResource;
+use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\OrganizationResource;
+use App\Http\Resources\EmergencyContactsResource;
+use App\Http\Requests\StoreOrUpdateUserNoteRequest;
+use App\Http\Requests\StoreOrUpdateUserProfileRequest;
+use App\Http\Requests\StoreOrUpdateUserOrganizationRequest;
+use App\Http\Requests\StoreOrUpdateUserEmergencyContactRequest;
 
 class UserController extends Controller
 {
     /* #region get user */
     /**
-     * Paginate all users
-     *
+     * get 10 user
      *  @OA\Get(
      *      path="/api/users",
-     *      parameters={
-     *         @OA\Parameter(
-     *            name="paginate",
-     *            in="query",
-     *            description="Number of users per page",
-     *            required=false,
-     *            example="10"
-     *            ),
-     *        @OA\Parameter(
-     *           name="filter",
-     *           in="query",
-     *           description="Filter users by name or email or mobile",
-     *           required=false,
-     *           example=""
-     *           ),
-     *      },
      *      tags={"Users"},
      *      security={{"sanctum":{}}},
      *      @OA\Response(response=200, description="success", @OA\JsonContent())
      *  )
-     *
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function index(Request $request)
+    public function index()
     {
-        $paginate = $request->paginate ? intval($request->paginate, 10) : 10;
-        $filter = $request->filter ? $request->filter : '';
-        if ($filter) {
-            $users = User::where('name', 'like', '%' . $filter . '%')
-                ->orWhere('email', 'like', '%' . $filter . '%')
-                ->orWhere('mobile', 'like', '%' . $filter . '%')
-                ->paginate($paginate);
-        } else {
-            $users = User::paginate($paginate);
-        }
-        $users = UserListResource::collection($users)->response()->getData(true);
+        $data = User::paginate(10);
 
-        return response()->json($users);
+        $result = [
+            'items' => UserListResource::collection($data->items()),
+            'total' => $data->total(),
+        ];
+
+        return response()->json($result);
+    }
+
+    /* #region datatable user */
+    /**
+     * datatable for users
+     *  @OA\POST(
+     *      path="/api/users/index",
+     *      @OA\RequestBody(
+     *          required=false,
+     *          @OA\JsonContent(ref="#/components/schemas/FilterServiceParams")
+     *      ),
+     *      tags={"Users"},
+     *      security={{"sanctum":{}}},
+     *      @OA\Response(response=200, description="success", @OA\JsonContent())
+     *  )
+     * @return \Illuminate\Http\Response
+     */
+    /* #endregion */
+    public function datatable(Request $request)
+    {
+        $filters = $request->input('filters');
+        $sorts = $request->input('sorts');
+        $pageSize = $request->input('pageSize');
+
+        $data = User::datatable($filters, $sorts, $pageSize);
+
+        $result = [
+            'items' => UserListResource::collection($data->items()),
+            'total' => $data->total(),
+        ];
+        return response()->json($result);
     }
 
     /* #region create user */
     /**
      * Create a new user
-     *
      *  @OA\POST(
      *      path="/api/users",
      *      tags={"Users"},
@@ -104,30 +111,20 @@ class UserController extends Controller
     /* #endregion */
     public function store(StoreUserRequest $request)
     {
-        $user = User::create([
-            'custom_id' => $request->validated()['custom_id'],
-            'name' => $request->validated()['username'],
-            'email' => $request->validated()['email'],
-            'full_name' => $request->validated()['full_name'],
-            'mobile_country_code' => $request->validated()['mobile_country_code'],
-            'mobile_country_calling_code' => $request->validated()['mobile_country_calling_code'],
-            'mobile' => $request->validated()['mobile'],
-            'password' => Hash::make($request->validated()['password']),
-        ]);
-
+        $data = $request->validated();
+        $username = $data['username'];
+        $user = User::create([...$data, 'name' => $username]);
         return response()->json(new UserInfoResource($user), 201);
     }
-
     /* #region find user */
     /**
      * Display User by user id
-     *
      * @OA\Get(
      *     tags={"Users"},
-     *     path="/api/users/{id}",
+     *     path="/api/users/{user}",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="user",
      *         description="User ID",
      *         required=true,
      *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -137,29 +134,24 @@ class UserController extends Controller
      *     @OA\Response(response=200, description="OK", @OA\JsonContent()),
      * )
 
-     *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::with('profile')->with('profile.address')->with('emergencyContacts')->with('organization')->with('userCategories')->findOrFail($id);
-
-        // return response()->json($user);
         return response()->json(new UserDetailResource($user));
     }
 
     /* #region update user */
     /**
      * Update User info by user id
-     *
      * @OA\Put(
      *     tags={"Users"},
-     *     path="/api/users/{id}",
+     *     path="/api/users/{user}",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="user",
      *         description="User ID",
      *         required=true,
      *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -183,39 +175,27 @@ class UserController extends Controller
      * )
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        if ($request->exists('password')) {
-            $request['password'] = $request->validated()['password'];
-        }
-
-        $user = User::findOrFail($id);
-        $user->update([
-            'name' => $request->validated()['username'],
-            'email' => $request->validated()['email'],
-            'full_name' => $request->validated()['full_name'],
-            'mobile_country_code' => $request->validated()['mobile_country_code'],
-            'mobile_country_calling_code' => $request->validated()['mobile_country_calling_code'],
-            'mobile' => $request->validated()['mobile'],
-        ]);
-
+        $data = $request->validated();
+        $username = $data['username'];
+        $user->update([...$data, 'name' => $username]);
         return response()->json(new UserInfoResource($user), 200);
     }
 
     /* #region delete user */
     /**
      * Delete User by user id
-     *
      * @OA\Delete(
      *     tags={"Users"},
-     *     path="/api/users/{id}",
+     *     path="/api/users/{user}",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="user",
      *         description="User ID",
      *         required=true,
      *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -224,33 +204,25 @@ class UserController extends Controller
      *     ),
      *     @OA\Response(response=204, description="No Content", @OA\JsonContent()),
      * )
-     *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        try {
-            $user = User::findOrFail($id);
-            $user->delete();
-
-            return response()->noContent();
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 404);
-        }
+        $user->delete();
+        return response()->json(null, 204);
     }
 
     /* #region store user profile */
     /**
      * Create/Update the User profile by user id
-     *
      * @OA\POST(
      *     tags={"Users"},
-     *     path="/api/users/{id}/profile",
+     *     path="/api/users/{user}/profile",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="user",
      *         description="User ID",
      *         required=true,
      *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -275,7 +247,7 @@ class UserController extends Controller
      *                  @OA\Property(property="phone", type="string", default="0422010000"),
      *                  @OA\Property(property="nationality", type="string", default="中華民國"),
      *                  @OA\Property(property="identity_code", type="string", default="N121111111"),
-     *                  @OA\Property(property="address", type="object",
+     *                  @OA\Property(property="address", type="object", 
      *                      @OA\Property(property="city", type="string", default="台中市"),
      *                      @OA\Property(property="region", type="string", default="西區"),
      *                      @OA\Property(property="zip_code", type="string", default="403"),
@@ -293,29 +265,26 @@ class UserController extends Controller
      * )
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\JsonResponse
      */
     /* #endregion */
-    public function profile(StoreOrUpdateUserProfileRequest $request, $id)
+    public function profile(StoreOrUpdateUserProfileRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
+        $data = $request->validated();
 
-        if ($request->exists('categories')) {
-            $userCategories = UserCategory::where('id', $request->categories['id'])->first();
-            if (! $userCategories) {
-                return response()->json(['success' => false, 'message' => 'User Category not found'], 404);
-            }
-            $user->userCategories()->sync($userCategories->id);
+        if ($data['categories']) {
+            $userCategory = UserCategory::findOrFail($data['categories']['id']);
+            $userCategory = $user->userCategories()->sync($userCategory);
         }
 
-        $user->profile()->updateOrCreate(['user_id' => $id], $request->validated());
+        $user->profile()->updateOrCreate(['user_id' => $user->id], $data);
 
-        if ($request->validated(['address'])) {
+        if($data['address']) {
             if ($user->profile->address()->exists()) {
-                $user->profile->address()->update($request->validated(['address']));
+                $user->profile->address()->update($data['address']);
             } else {
-                $user->profile->address()->create($request->validated(['address']));
+                $user->profile->address()->create($data['address']);
             }
         }
 
@@ -325,13 +294,12 @@ class UserController extends Controller
     /* #region store user organization */
     /**
      * Create/Update the User Organization by user id
-     *
      * @OA\POST(
      *     tags={"Users"},
-     *     path="/api/users/{id}/organization",
+     *     path="/api/users/{user}/organization",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="user",
      *         description="User ID",
      *         required=true,
      *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -348,7 +316,7 @@ class UserController extends Controller
      *                  @OA\Property(property="phone_country_calling_code", type="string", default="+886"),
      *                  @OA\Property(property="phone", type="string", default="0422000000"),
      *                  @OA\Property(property="email", type="string", default="test@example.com"),
-     *                  @OA\Property(property="address", type="object",
+     *                  @OA\Property(property="address", type="object", 
      *                      @OA\Property(property="city", type="string", default="台中市"),
      *                      @OA\Property(property="region", type="string", default="西區"),
      *                      @OA\Property(property="zip_code", type="string", default="403"),
@@ -367,20 +335,20 @@ class UserController extends Controller
      * )
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function organization(StoreOrUpdateUserOrganizationRequest $request, $id)
+    public function organization(StoreOrUpdateUserOrganizationRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
-        $user->organization()->updateOrCreate(['user_id' => $id], $request->validated());
+        $data = $request->validated();
+        $user->organization()->updateOrCreate(['user_id' => $user->id], $data);
 
-        if ($request->validated(['address'])) {
+        if ($data['address']) {
             if ($user->organization->address()->exists()) {
-                $user->organization->address()->update($request->validated(['address']));
+                $user->organization->address()->update($data['address']);
             } else {
-                $user->organization->address()->create($request->validated(['address']));
+                $user->organization->address()->create($data['address']);
             }
         }
 
@@ -390,13 +358,12 @@ class UserController extends Controller
     /* #region store user emergency contact */
     /**
      * Create/Update the User Emergency Contact by user id
-     *
      * @OA\POST(
      *     tags={"Users"},
-     *     path="/api/users/{id}/emergency-contact",
+     *     path="/api/users/{user}/emergency-contact",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="user",
      *         description="User ID",
      *         required=true,
      *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
@@ -422,20 +389,61 @@ class UserController extends Controller
      * )
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function emergencyContact(StoreOrUpdateUserEmergencyContactRequest $request, $id)
+    public function emergencyContact(StoreOrUpdateUserEmergencyContactRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        if ($user->emergencyContacts()->exists()) {
-            $user->emergencyContacts()->update($request->validated());
+        $data = $request->validated();
+        if($user->emergencyContacts()->exists()) {
+            $user->emergencyContacts()->update($data);
         } else {
-            $user->emergencyContacts()->create($request->validated());
+            $user->emergencyContacts()->create($data);
         }
-
         return response()->json(new EmergencyContactsResource($user->emergencyContacts[0]), 200);
+    }
+
+
+    /* #region store user note */
+    /**
+     * Create/Update the User Note by user id
+     * @OA\POST(
+     *     tags={"Users"},
+     *     path="/api/users/{user}/note",
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="user",
+     *         description="User ID",
+     *         required=true,
+     *         example="ffffffff-ffff-ffff-ffff-ffffffffffff",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(property="note", type="string", default="測試"),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="OK", @OA\JsonContent()),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=403, description="Forbidden"),
+     *     @OA\Response(response=404, description="Not Found"),
+     *     @OA\Response(response=422, description="Unprocessable Content"),
+     * )
+     *
+     * @param  App\Http\Requests\StoreOrUpdateUserNoteRequest  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    /* #endregion */
+    public function note(StoreOrUpdateUserNoteRequest $request, User $user)
+    {
+        $data = $request->validated();
+        $user->profile()->updateOrCreate(['user_id' => $user->id], $data);
+        return response()->json(['note' => $user->profile->note], 200);
     }
 }

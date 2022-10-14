@@ -3,12 +3,21 @@
 namespace App\Policies;
 
 use App\Models\Team;
+use App\Models\AdminUser;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy
 {
     use HandlesAuthorization;
+
+    /* Allow Admin User to do anything */
+    public function before(AdminUser $user)
+    {
+        if($user) {
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.

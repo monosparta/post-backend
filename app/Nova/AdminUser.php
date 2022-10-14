@@ -3,25 +3,27 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
+use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class UserEmergencyContact extends Resource
+class AdminUser extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\EmergencyContact::class;
+    public static $model = \App\Models\AdminUser::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'email';
 
     /**
      * The columns that should be searched.
@@ -29,7 +31,7 @@ class UserEmergencyContact extends Resource
      * @var array
      */
     public static $search = [
-        'name', 'mobile'
+        'id', 'name', 'email',
     ];
 
     /**
@@ -41,19 +43,25 @@ class UserEmergencyContact extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('Name')
+            ID::make()->sortable()->hideFromIndex(),
+
+            Text::make('Username', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Mobile Country Code')->hideFromIndex(),
+            Text::make('Email')
+                ->sortable()
+                ->rules('required', 'email', 'max:254')
+                ->creationRules('unique:admin_users,email')
+                ->updateRules('unique:admin_users,email,{{resourceId}}'),
 
-            Text::make('Mobile Country Calling Code'),
+            Text::make('Phone'),
 
-            Text::make('Mobile'),
+            Password::make('Password')
+                ->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
 
-            Text::make('Relationship'),
-
-            BelongsTo::make('User'),
         ];
     }
 

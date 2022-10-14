@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums;
 
 return new class extends Migration
 {
@@ -21,14 +22,14 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->date('birth_date')->nullable();
-            $table->string('description')->nullable();
             $table->string('job_title')->nullable();
-            $table->string('gender');
+            $table->smallInteger('gender')->default(Enums\Gender::other->value);
             $table->string('phone_country_code')->nullable();
             $table->string('phone_country_calling_code')->nullable();
             $table->string('phone')->nullable();
-            $table->string('nationality');
+            $table->string('nationality')->default('Taiwan');
             $table->string('identity_code')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

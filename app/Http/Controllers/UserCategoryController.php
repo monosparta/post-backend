@@ -2,34 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserCategoryResource;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserCategoryResource;
+use App\Http\Requests\StoreUserCategoryRequest;
+use App\Http\Requests\UpdateUserCategoryRequest;
 
 class UserCategoryController extends Controller
 {
     /* #region get user categories */
     /**
      * Display all users categories.
-     *
      *  @OA\Get(
-     *      path="/api/users/categories",
-     *      parameters={
-     *         @OA\Parameter(
-     *            name="paginate",
-     *            in="query",
-     *            description="Number of users per page, default is 10",
-     *            required=false,
-     *            example="10"
-     *            ),
-     *        @OA\Parameter(
-     *           name="filter",
-     *           in="query",
-     *           description="Filter userCategory by type name",
-     *           required=false,
-     *           example=""
-     *           ),
-     *      },
+     *      path="/api/userCategories",
      *      tags={"UserCategory"},
      *      security={{"sanctum":{}}},
      *      @OA\Response(
@@ -38,42 +23,62 @@ class UserCategoryController extends Controller
      *          @OA\JsonContent()
      *      ),
      *  )
-     *
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function index(Request $request)
+    public function index()
     {
-        $filter = $request->filter ? $request->filter : null;
-        $userCategories = UserCategory::when($filter, function ($query, $filter) {
-            return $query->where('name', 'like', '%' . $filter . '%');
-        });
+        $userCategories = UserCategory::all();
+        return response()->json(UserCategoryResource::collection($userCategories));
+    }
 
-        if ($request->has('paginate') && $request->paginate != null) {
-            $paginate = $request->paginate ? intval($request->paginate, 10) : 10;
-            $userCategories = $userCategories->paginate($paginate);
-            $userCategories = UserCategoryResource::collection($userCategories)->response()->getData(true);
-        } else {
-            $userCategories = $userCategories->get();
-            $userCategories = UserCategoryResource::collection($userCategories);
-        }
+    /* #region get user categories */
+    /**
+     * Datatable categories.
+     *  @OA\POST(
+     *      path="/api/userCategories/index",
+     *      tags={"UserCategory"},
+     *      security={{"sanctum":{}}},
+     *      @OA\RequestBody(
+     *          required=false,
+     *          @OA\JsonContent(ref="#/components/schemas/FilterServiceParams")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent()
+     *      ),
+     *  )
+     * @return \Illuminate\Http\Response
+     */
+    /* #endregion */
+    public function datatable(Request $request)
+    {
+        $filters = $request->input('filters');
+        $sorts = $request->input('sorts');
+        $pageSize = $request->input('pageSize');
 
-        return response()->json($userCategories);
+        $data = UserCategory::datatable($filters, $sorts, $pageSize);
+
+        $result = [
+            'items' => UserCategoryResource::collection($data->items()),
+            'total' => $data->total(),
+        ];
+        return response()->json($result);
     }
 
     /* #region create new user category */
     /**
      * Create new user category.
-     *
      *  @OA\POST(
-     *      path="/api/users/categories",
+     *      path="/api/userCategories",
      *      tags={"UserCategory"},
      *      security={{"sanctum":{}}},
      *      @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="application/json",
      *               @OA\Schema(
-     *                  @OA\Property(property="name", type="string", default=""),
+     *                  @OA\Property(property="name", type="string", default="test"),
      *             ),
      *         ),
      *     ),
@@ -88,28 +93,22 @@ class UserCategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function store(Request $request)
+    public function store(StoreUserCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-        $userCategory = UserCategory::create([
-            'name' => $request->name,
-        ]);
-
-        return new UserCategoryResource($userCategory);
+        $data = $request->validated();
+        $userCategory = UserCategory::create($data);
+        return response()->json(new UserCategoryResource($userCategory));
     }
 
     /* #region find user category */
     /**
      * Display Category
-     *
      * @OA\Get(
      *     tags={"UserCategory"},
-     *     path="/api/users/categories/{id}",
+     *     path="/api/userCategories/{userCategory}",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="userCategory",
      *         description="UserCategory ID",
      *         required=true,
      *         in="path",
@@ -121,28 +120,24 @@ class UserCategoryController extends Controller
      *     @OA\Response(response=404, description="Not Found"),
      * )
 
-     *
-     * @param  int  $id
+     * @param  \App\Models\UserCategory  $userCategory
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function show($id)
+    public function show(UserCategory $userCategory)
     {
-        $userCategory = UserCategory::findOrFail($id);
-
-        return new UserCategoryResource($userCategory);
+        return response()->json(new UserCategoryResource($userCategory));
     }
 
     /* #region update user category */
     /**
      * Update the User Category name.
-     *
      * @OA\Put(
      *     tags={"UserCategory"},
-     *     path="/api/users/categories/{id}",
+     *     path="/api/userCategories/{userCategory}",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="userCategory",
      *         description="UserCategory ID",
      *         required=true,
      *         in="path",
@@ -164,33 +159,26 @@ class UserCategoryController extends Controller
      * )
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\UserCategory  $userCategory
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function update(Request $request, $id)
+    public function update(UpdateUserCategoryRequest $request, UserCategory $userCategory)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-        $userCategory = UserCategory::findOrFail($id);
-        $userCategory->update([
-            'name' => $request->name,
-        ]);
-
-        return new UserCategoryResource($userCategory);
+        $date = $request->validated();
+        $userCategory->update($date);
+        return response()->json(new UserCategoryResource($userCategory));
     }
 
     /* #region delete user category */
     /**
      * Remove User Category.
-     *
      * @OA\Delete(
      *     tags={"UserCategory"},
-     *     path="/api/users/categories/{id}",
+     *     path="/api/userCategories/{userCategory}",
      *     security={{"sanctum":{}}},
      *     @OA\Parameter(
-     *         name="id",
+     *         name="userCategory",
      *         description="UserCategory ID",
      *         required=true,
      *         in="path",
@@ -202,16 +190,13 @@ class UserCategoryController extends Controller
      *     @OA\Response(response=404, description="Not Found"),
      *     @OA\Response(response=406, description="Only Accept application/json"),
      * )
-     *
-     * @param  int  $id
+     * @param  \App\Models\UserCategory  $userCategory
      * @return \Illuminate\Http\Response
      */
     /* #endregion */
-    public function destroy($id)
+    public function destroy(UserCategory $userCategory)
     {
-        $userCategory = UserCategory::findOrFail($id);
         $userCategory->delete();
-
         return response()->noContent();
     }
 }

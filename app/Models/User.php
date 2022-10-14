@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use App\Traits\UuidTrait;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits;
+use Laravel\Jetstream\HasTeams;
+use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 // use Laravel\Sanctum\HasApiTokens;
-use Laravel\Jetstream\HasTeams;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use MohamedGaber\SanctumRefreshToken\Traits\HasApiTokens;
 
 class User extends Authenticatable
@@ -20,7 +23,8 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use UuidTrait;
+    use Traits\UuidTrait;
+    use Traits\DatatableFilter;
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +32,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password', 'mobile_country_code', 'mobile_country_calling_code', 'mobile', 'full_name', 'custom_id',
+        'name', 'email', 'password', 'mobile_country_code', 'mobile_country_calling_code', 'mobile', 'full_name', 'custom_id'
     ];
 
     /**
@@ -64,28 +68,31 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function profile()
-    {
+    public function profile() {
         return $this->hasOne(UserProfile::class);
     }
 
-    public function organization()
-    {
+    public function organization() {
         return $this->hasOne(Organization::class);
     }
 
-    public function address()
-    {
+    public function address() {
         return $this->hasManyThrough(Address::class, UserProfile::class, 'user_id', 'addressable_id', 'id', 'id');
     }
 
-    public function userCategories()
-    {
+    public function userCategories() {
         return $this->belongsToMany(UserCategory::class, 'user_user_categories');
     }
 
-    public function emergencyContacts()
-    {
+    public function emergencyContacts() {
         return $this->hasMany(EmergencyContact::class);
+    }
+
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value,
+            set: fn ($value) => Hash::make($value)
+        );
     }
 }

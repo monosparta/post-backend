@@ -2,10 +2,10 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UserCategory extends Resource
@@ -30,7 +30,7 @@ class UserCategory extends Resource
      * @var array
      */
     public static $search = [
-        'name',
+        'name'
     ];
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\PaginationResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserListResource extends JsonResource

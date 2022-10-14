@@ -14,24 +14,32 @@ use Illuminate\Routing\Controller as BaseController;
  *      description="Monospace Member System API 文件",
  * ),
  * @OA\Tag(
- *   name="V1/Auth",
- *   description="Use Token Authentication"
+ *      name="V1/Auth",
+ *      description="Use Token Authentication"
  * ),
  * @OA\Tag(
- *  name="Enumerate Dropdown",
- *  description="Enumerate of drop down list"
+ *      name="Enumerate Dropdown",
+ *      description="Enumerate of drop down list"
  * ),
  * @OA\Tag(
- *   name="Users",
- *   description="Admin CRUD User"
+ *      name="Enumerate",
+ *      description="Admin CRUD Enumerate"
  * ),
  * @OA\Tag(
- *   name="UserCategory",
- *   description="Admin CRUD UserCategory"
+ *      name="EnumerateItem",
+ *      description="Admin CRUD Enumerate Item"
  * ),
  * @OA\Tag(
- *  name="LineBot",
- *  description="API Endpoints of LineBot of Message"
+ *      name="Users",
+ *      description="Admin CRUD User"
+ * ),
+ * @OA\Tag(
+ *      name="UserCategory",
+ *      description="Admin CRUD UserCategory"
+ * ),
+ * @OA\Tag(
+ *      name="Bulletin Board",
+ *      description="API Endpoints of Bulletin Comment"
  * ),
  */
 class Controller extends BaseController

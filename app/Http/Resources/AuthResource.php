@@ -31,8 +31,8 @@ class AuthResource extends JsonResource
                     'access_token_expires_at' => $this['access_token']->accessToken->expires_at,
                     'refresh_token' => $this['refresh_token']->plainTextToken,
                     'refresh_token_expires_at' => $this['refresh_token']->accessToken->expires_at,
-                ],
-            ],
+                ]
+            ]
         ];
     }
 }

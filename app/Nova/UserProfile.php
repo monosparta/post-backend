@@ -2,14 +2,14 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphOne;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UserProfile extends Resource
@@ -34,7 +34,7 @@ class UserProfile extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'last_name', 'nick_name',
+        'id', 'last_name', 'nick_name'
     ];
 
     public static $displayInNavigation = false;
@@ -86,7 +86,7 @@ class UserProfile extends Resource
 
             Text::make('Identity Code'),
 
-            Trix::make('Description')->hideFromIndex(),
+            Trix::make('Note')->hideFromIndex(),
 
             MorphOne::make('Address'),
         ];
