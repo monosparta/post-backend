@@ -46,9 +46,9 @@ class Address extends Resource
             // ID::make()->sortable(),
 
             Text::make('City'),
-            
+
             Text::make('Zip Code'),
-            
+
             Text::make('Region'),
 
             Text::make('Address Line 1'),

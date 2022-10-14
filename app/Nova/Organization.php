@@ -43,7 +43,7 @@ class Organization extends Resource
     {
         return [
             // ID::make()->sortable(),
-            
+
             BelongsTo::make('User'),
 
             MorphOne::make('Address'),

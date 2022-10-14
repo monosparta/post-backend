@@ -55,7 +55,7 @@ class FilterService
                 $value = array_key_exists('operator', $filter) ? $filter['value'] : "%" . $filter['value'] . "%";
 
 
-                
+
                 switch ($operator) {
                     case 'between':
                         if (gettype($value) === 'array') {

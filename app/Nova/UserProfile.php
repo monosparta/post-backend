@@ -57,15 +57,15 @@ class UserProfile extends Resource
             Text::make('First Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-            
+
             Text::make('Last Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-            
+
             Text::make('Middle Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-            
+
             Date::make('Birth Date'),
 
             Select::make('Gender')->options([
