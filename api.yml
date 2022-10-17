@@ -60,46 +60,11 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
-  /post/{postId}:
+  /author/posts?id={userId}:
     get:
       tags:
         - post
-      summary: Find Post by ID
-      description: Returns a single Post
-      parameters:
-        - name: postId
-          in: path
-          description: ID of Post to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Post'
-        '404':
-          description: Post not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-      security:
-        - bearerAuth: []
-  /author/posts/{userId}:
-    get:
-      tags:
-        - post
-      summary: Find Post by ID
+      summary: Find Post by UserId
       description: Returns a single Post
       parameters:
         - name: userId
@@ -130,6 +95,41 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
+  /post/{postId}:
+    get:
+      tags:
+        - post
+      summary: Find Post by PostId
+      description: Returns a single Post
+      parameters:
+        - name: postId
+          in: path
+          description: ID of Post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+      security:
+        - bearerAuth: []
     put:
       tags:
         - post
@@ -144,7 +144,7 @@ paths:
             type: integer
             format: int64
       requestBody:
-        $ref: '#/components/requestBodies/ModifyPost'
+        $ref: '#/components/requestBodies/PutModifyPost'
       responses:
         '200':
           description: successful updata
@@ -170,11 +170,11 @@ paths:
       tags:
         - post
       summary: Deletes a Post
-      description: delete a Post
+      description: Delete a Post
       parameters:
         - name: postId
           in: path
-          description: Post id to delete
+          description: PostId to Delete
           required: true
           schema:
             type: integer
@@ -200,7 +200,6 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
- 
 components:
   schemas:
     Post:
@@ -258,6 +257,16 @@ components:
         user_id:
           type: string
           format: uuid
+    PutRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        PostId:
+          type: string
+          format: uuid
     GenericResponse:
       type: object
       properties:
@@ -278,6 +287,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PostRequest'
+    PutModifyPost:
+      description: Post object to be modified
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PutRequest'
   securitySchemes:
     bearerAuth:
       type: http
