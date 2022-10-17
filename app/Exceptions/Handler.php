@@ -66,10 +66,10 @@ class Handler extends ExceptionHandler
                 'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
             ], 404);
         }
-        return response()->json([
-            'message' => 'Internal server error',
-        ], 500);
+        // return response()->json([
+        //     'message' => 'Internal server error',
+        // ], 500);
 
-        // return parent::render($request, $e);
+        return parent::render($request, $e);
     }
 }

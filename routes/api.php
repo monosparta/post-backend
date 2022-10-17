@@ -45,5 +45,6 @@ Route::post('/post',[PostController::class,'store']);//c
 Route::get('/post/{post}',[PostController::class,'show']);//r
 Route::put('/post/{post}',[PostController::class,'update']);//u
 Route::delete('/post/{post}',[PostController::class,'destroy']);//d
+Route::get('author/posts',[PostController::class,'getPost']);
 
  //Route::apiResource('post', PostController::class);
