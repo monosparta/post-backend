@@ -22,7 +22,7 @@ class PostController extends Controller
         $Post = Post::orderBy('created_at', 'desc')->get();
         $post_arr = $Post->map(function ($item, $key) {
             $User = User::where('id', $item->user_id)->firstOrFail();
-            return [
+            return 
                 // 'id' => $item->id,
                 // 'title' => $item->title,
                 // 'content' => substr($item->content, 0, 300),
@@ -33,7 +33,7 @@ class PostController extends Controller
                 //     'name' => $User->name
                 // ]
                 new PostdataResource($item)
-            ];
+            ;
         });
         return response()->json($post_arr, 200);
     }
@@ -65,7 +65,7 @@ class PostController extends Controller
             ]);
             $Post = Post::create($request->all());
             $User = User::where('id', $request->input('user_id'))->firstOrFail();
-            return response()->json([
+            return response()->json(
                 // 'id' => $Post->id,
                 // 'title' => $Post->title,
                 // 'content' => $Post->content,
@@ -76,7 +76,7 @@ class PostController extends Controller
                 //     'name' => $User->name
                 // ]
                 new PostdataResource($Post)
-            ], 201);
+            , 201);
             //return response()->json($Post,201);
         } catch (ValidationException $exception) {
             $errorMessage =
@@ -133,7 +133,7 @@ class PostController extends Controller
         $User = User::where('id', $post->user_id)->firstOrFail();
         $post->update($request->all());
         //return response($post);
-        return response()->json([
+        return response()->json(
             // 'id' => $post->id,
             // 'title' => $post->title,
             // 'content' => $post->content,
@@ -144,7 +144,7 @@ class PostController extends Controller
             //     'name' => $User->name
             // ]
             new PostdataResource($post)
-        ], 200);
+        , 200);
     }
 
     /**
