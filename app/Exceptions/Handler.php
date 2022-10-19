@@ -63,12 +63,13 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
             return response()->json([
-                'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
+                // 'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
+                'message' => 'Post not found',
             ], 404);
         }
-        // return response()->json([
-        //     'message' => 'Internal server error',
-        // ], 500);
+        return response()->json([
+            'message' => 'Internal server error',
+        ], 500);
 
         return parent::render($request, $e);
     }

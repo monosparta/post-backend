@@ -60,7 +60,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
-  /author/{userId}/posts:
+  /author/{user_id}/posts:
     get:
       tags:
         - post
@@ -95,7 +95,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
-  /post/{postId}:
+  /post/{post_id}:
     get:
       tags:
         - post
@@ -243,18 +243,20 @@ components:
         name:
           type: string
         post:
-          type: object
-          properties:
-            post_id:
-              type: string
-              format: uuid
-            title:
-              type: string
-            content:
-              type: string
-            updated_at:
-              type: string
-              format: date-time
+          type: array
+          items:
+            type: object
+            properties:
+              post_id:
+                type: string
+                format: uuid
+              title:
+                type: string
+              content:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
     PostRequest:
       type: object
       properties:
@@ -272,9 +274,6 @@ components:
           type: string
         content:
           type: string
-        post_id:
-          type: string
-          format: uuid
     GenericResponse:
       type: object
       properties:
