@@ -22,7 +22,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
+                $ref: '#/components/schemas/Post_put'
         '400':
           description: Incorrect format
           content:
@@ -60,7 +60,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
-  /author/posts?id={userId}:
+  /author/{userId}/posts:
     get:
       tags:
         - post
@@ -151,7 +151,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
+                $ref: '#/components/schemas/Post_put'
         '404':
           description: Post not found
           content:
@@ -226,6 +226,14 @@ components:
               format: uuid
             name:
               type: string
+    Post_put:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+        message:
+          type: string
     user:
       type: object
       properties:

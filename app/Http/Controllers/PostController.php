@@ -65,8 +65,9 @@ class PostController extends Controller
             ]);
             $Post = Post::create($request->all());
             $User = User::where('id', $request->input('user_id'))->firstOrFail();
-            return response()->json(
-                // 'id' => $Post->id,
+            return response()->json([
+                'id' => $Post->id,
+                'message' => "Successful Created"
                 // 'title' => $Post->title,
                 // 'content' => $Post->content,
                 // 'created_at' => $Post->created_at,
@@ -75,7 +76,8 @@ class PostController extends Controller
                 //     'id' => $User->id,
                 //     'name' => $User->name
                 // ]
-                new PostdataResource($Post)
+                ]
+                // new PostdataResource($Post)
             , 201);
             //return response()->json($Post,201);
         } catch (ValidationException $exception) {
@@ -133,8 +135,9 @@ class PostController extends Controller
         $User = User::where('id', $post->user_id)->firstOrFail();
         $post->update($request->all());
         //return response($post);
-        return response()->json(
-            // 'id' => $post->id,
+        return response()->json([
+            'id' => $post->id,
+            'message' => "successful updata"
             // 'title' => $post->title,
             // 'content' => $post->content,
             // 'created_at' => $post->created_at,
@@ -143,7 +146,8 @@ class PostController extends Controller
             //     'id' => $User->id,
             //     'name' => $User->name
             // ]
-            new PostdataResource($post)
+        ]
+            // new PostdataResource($post)
         , 200);
     }
 
@@ -158,15 +162,18 @@ class PostController extends Controller
         $post->delete();
         return response()->json(['message' => "Delete success"], 200);
     }
-    public function getPost(Request $request){
-        if($request->has('Id')){
-            $authorId=$request->query('Id');
-            //dd($authorId);
-            $author = User::find($authorId);
-            //dd($author);
-            //return response($author);
-            return response()->json(new AuthorPostsResource($author));
-        }
+    public function getPost(Request $request ,Post $post){
+        //$User = User::where('id', $post->user_id)->firstOrFail();
+        
+        // if($request->has('Id')){
+        //     $authorId=$request->query('Id');
+        //     //dd($authorId);
+        //     $author = User::find($authorId);
+        //     //dd($author);
+        //     //return response($author);
+        //     return response()->json(new AuthorPostsResource($author));
+        // }
+       return response()->json(new AuthorPostsResource($User));
         // return response()->json(Post::first()->user);
        // return response()->json(Post::with('user')->get());
     }
