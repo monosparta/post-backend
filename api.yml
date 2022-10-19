@@ -205,7 +205,7 @@ components:
     Post:
       type: object
       properties:
-        id: 
+        post_id: 
           type: string
           format: uuid
         title:
@@ -221,7 +221,7 @@ components:
         user:
           type: object
           properties:
-            id:
+            user_id:
               type: string
               format: uuid
             name:
