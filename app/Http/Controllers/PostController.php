@@ -137,7 +137,7 @@ class PostController extends Controller
         //return response($post);
         return response()->json([
             'post_id' => $post->id,
-            'message' => "successful updata"
+            'message' => "successful update"
             // 'title' => $post->title,
             // 'content' => $post->content,
             // 'created_at' => $post->created_at,

@@ -147,7 +147,7 @@ paths:
         $ref: '#/components/requestBodies/PutModifyPost'
       responses:
         '200':
-          description: successful updata
+          description: successful update
           content:
             application/json:
               schema:
