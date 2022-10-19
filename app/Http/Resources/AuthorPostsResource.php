@@ -15,7 +15,7 @@ class AuthorPostsResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'user_id'=>$this->id,
             'name'=>$this->name,
             'posts'=> PostResource::collection($this->posts)
         ];

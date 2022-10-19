@@ -229,7 +229,7 @@ components:
     Post_put:
       type: object
       properties:
-        id: 
+        post_id: 
           type: string
           format: uuid
         message:
@@ -237,7 +237,7 @@ components:
     user:
       type: object
       properties:
-        id: 
+        user_id: 
           type: string
           format: uuid
         name:
@@ -245,7 +245,7 @@ components:
         post:
           type: object
           properties:
-            id:
+            post_id:
               type: string
               format: uuid
             title:
@@ -272,7 +272,7 @@ components:
           type: string
         content:
           type: string
-        PostId:
+        post_id:
           type: string
           format: uuid
     GenericResponse:

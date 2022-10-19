@@ -66,7 +66,7 @@ class PostController extends Controller
             $Post = Post::create($request->all());
             $User = User::where('id', $request->input('user_id'))->firstOrFail();
             return response()->json([
-                'id' => $Post->id,
+                'post_id' => $Post->id,
                 'message' => "Successful Created"
                 // 'title' => $Post->title,
                 // 'content' => $Post->content,
@@ -136,7 +136,7 @@ class PostController extends Controller
         $post->update($request->all());
         //return response($post);
         return response()->json([
-            'id' => $post->id,
+            'post_id' => $post->id,
             'message' => "successful updata"
             // 'title' => $post->title,
             // 'content' => $post->content,
@@ -160,11 +160,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return response()->json(['message' => "Delete success"], 200);
+        return response()->json(['message' => "successful delete"], 200);
     }
-    public function getPost(Request $request ,Post $post){
+    public function getPost(Request $request ,User $user){
         //$User = User::where('id', $post->user_id)->firstOrFail();
-        
         // if($request->has('Id')){
         //     $authorId=$request->query('Id');
         //     //dd($authorId);
@@ -173,7 +172,7 @@ class PostController extends Controller
         //     //return response($author);
         //     return response()->json(new AuthorPostsResource($author));
         // }
-       return response()->json(new AuthorPostsResource($User));
+       return response()->json(new AuthorPostsResource($user));
         // return response()->json(Post::first()->user);
        // return response()->json(Post::with('user')->get());
     }
