@@ -63,8 +63,7 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
             return response()->json([
-                // 'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
-                'message' => 'Post not found',
+                'message' => 'Resource for ' . str_replace('App\\Models\\', '', $e->getModel()) . ' not found',
             ], 404);
         }
         return response()->json([

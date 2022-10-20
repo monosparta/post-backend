@@ -14,11 +14,11 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        $test = Post::factory()->create([
+        Post::factory()->create([
             'id' => 'ffffffff-ffff-ffff-ffff-ffffffffffff'
         ]);
 
-        $test = Post::factory()->create([
+        Post::factory()->create([
             'id' => '00000000-0000-0000-0000-000000000000'
         ]);
         Post::factory(10)->create();

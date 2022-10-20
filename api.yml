@@ -152,6 +152,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post_put'
+        '400':
+          description: Incorrect format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
         '404':
           description: Post not found
           content:
@@ -181,7 +187,7 @@ paths:
             format: int64
       responses:
         '200':
-          description: successful delete
+          description: Successful delete
           content:
             application/json:
               schema:
@@ -254,6 +260,9 @@ components:
                 type: string
               content:
                 type: string
+              created_at:
+                type: string
+                format: date-time
               updated_at:
                 type: string
                 format: date-time

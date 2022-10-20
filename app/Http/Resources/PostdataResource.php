@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
-use App\Http\Resources\UserdataResource;
+use App\Http\Resources\UserDataResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostdataResource extends JsonResource
+class PostDataResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,7 +22,7 @@ class PostdataResource extends JsonResource
             'content'=>$this->content,
             'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,
-            'user'=> new UserdataResource($this->user)
+            'user'=> new UserDataResource($this->user)
         ];
     }
 }

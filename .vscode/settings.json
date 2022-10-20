@@ -3,4 +3,7 @@
         "resources/lang"
     ],
     "editor.laravel.pint.enabled": true,
+    "cSpell.words": [
+        "Arrayable"
+    ],
 }
