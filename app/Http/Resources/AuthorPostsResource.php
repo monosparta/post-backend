@@ -17,7 +17,7 @@ class AuthorPostsResource extends JsonResource
         return [
             'user_id'=>$this->id,
             'name'=>$this->name,
-            'posts'=> PostResource::collection($this->posts)
+            'posts'=> PostResource::collection($this->posts)->collection->sortByDesc('created_at')
         ];
     }
 }
