@@ -15,9 +15,9 @@ class AuthorPostsResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_id'=>$this->id,
-            'name'=>$this->name,
-            'posts'=> PostResource::collection($this->posts)->collection->sortByDesc('created_at')
+            'user_id' => $this->id,
+            'name' => $this->name,
+            'posts' => PostResource::collection($this->posts->sortByDesc('created_at'))
         ];
     }
 }
