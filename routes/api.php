@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\V1\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,3 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('users/{user}/organization', [UserController::class, 'organization']);
     Route::post('users/{user}/emergency-contact', [UserController::class, 'emergencyContact']);
 });
+Route::get('posts',[PostController::class,'index']);
+Route::post('post',[PostController::class,'store']);//c
+Route::get('post/{post}',[PostController::class,'show']);//r
+Route::put('post/{post}',[PostController::class,'update']);//u
+Route::delete('post/{post}',[PostController::class,'destroy']);//d
+Route::get('author/{user}/posts',[PostController::class,'getPost']);
+
+ //Route::apiResource('post', PostController::class);

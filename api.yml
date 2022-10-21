@@ -18,11 +18,11 @@ paths:
         $ref: '#/components/requestBodies/AddPost'
       responses:
         '201':
-          description: Successful Created
+          description: Successful created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
+                $ref: '#/components/schemas/PostPut'
         '400':
           description: Incorrect format
           content:
@@ -30,7 +30,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
         '500':
-          description: server error
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -45,7 +45,7 @@ paths:
       description: Get all Posts ordered by created date
       responses:
         '200':
-          description: successful operation & a list of Posts
+          description: Successful operation & a list of Posts
           content:
             application/json:
               schema:
@@ -60,50 +60,55 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
-  /post/{postId}:
+  /author/{user_id}/posts:
     get:
       tags:
         - post
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
+      summary: Find Post by UserId
+      description: Returns a single Post
       parameters:
-        - name: postId
+        - name: userId
           in: path
-          description: ID of pet to return
+          description: ID of Post to return
           required: true
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
-        '400':
-          description: Invalid ID supplied
+                $ref: '#/components/schemas/User'
         '404':
-          description: Pet not found
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
-    put:
+  /post/{post_id}:
+    get:
       tags:
         - post
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
+      summary: Find Post by PostId
+      description: Returns a single Post
       parameters:
         - name: postId
           in: path
-          description: ID of pet to return
+          description: ID of Post to return
           required: true
           schema:
             type: integer
             format: int64
-      requestBody:
-        $ref: '#/components/requestBodies/ModifyPost'
       responses:
         '200':
           description: Successful operation
@@ -111,46 +116,102 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        '400':
-          description: Invalid ID supplied
         '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - post
+      summary: Update an existing Post
+      description: Update an existing Post by Id
+      parameters:
+        - name: postId
+          in: path
+          description: ID of Post to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/PutModifyPost'
+      responses:
+        '200':
+          description: Successful update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostPut'
+        '400':
+          description: Incorrect format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
     delete:
       tags:
         - post
-      summary: Deletes a pet
-      description: delete a pet
-      operationId: deletePet
+      summary: Deletes a Post
+      description: Delete a Post
       parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
         - name: postId
           in: path
-          description: Pet id to delete
+          description: PostId to delete
           required: true
           schema:
             type: integer
             format: int64
       responses:
-        '400':
-          description: Invalid pet value
+        '200':
+          description: Successful delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
       security:
         - bearerAuth: []
- 
 components:
   schemas:
     Post:
       type: object
       properties:
-        id: 
+        post_id: 
           type: string
           format: uuid
         title:
@@ -166,11 +227,45 @@ components:
         user:
           type: object
           properties:
-            id:
+            user_id:
               type: string
               format: uuid
             name:
               type: string
+    PostPut:
+      type: object
+      properties:
+        post_id: 
+          type: string
+          format: uuid
+        message:
+          type: string
+    User:
+      type: object
+      properties:
+        user_id: 
+          type: string
+          format: uuid
+        name:
+          type: string
+        post:
+          type: array
+          items:
+            type: object
+            properties:
+              post_id:
+                type: string
+                format: uuid
+              title:
+                type: string
+              content:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
     PostRequest:
       type: object
       properties:
@@ -181,6 +276,13 @@ components:
         user_id:
           type: string
           format: uuid
+    PutRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
     GenericResponse:
       type: object
       properties:
@@ -201,6 +303,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PostRequest'
+    PutModifyPost:
+      description: Post object to be modified
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PutRequest'
   securitySchemes:
     bearerAuth:
       type: http
