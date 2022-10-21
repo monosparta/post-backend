@@ -4,8 +4,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\V1\AuthController;
-use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*

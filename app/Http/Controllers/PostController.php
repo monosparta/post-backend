@@ -45,14 +45,14 @@ class PostController extends Controller
     {
         try {
             $request->validate([
-                "title" => "required|string",
-                "content" => "required|string",
+                'title' => 'required|string',
+                'content' => 'required|string',
                 'user_id' => 'required|uuid'
             ]);
             $Post = Post::create($request->all());
             return response()->json([
                 'post_id' => $Post->id,
-                'message' => "Successful Created"
+                'message' => 'Successful Created'
                 ], 201);
         } catch (ValidationException $exception) {
             $errorMessage =
@@ -95,7 +95,7 @@ class PostController extends Controller
         $post->update($request->all());
         return response()->json([
             'post_id' => $post->id,
-            'message' => "successful update"
+            'message' => 'successful update'
             ], 200);
     }
 
@@ -108,7 +108,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return response()->json(['message' => "Successful delete"], 200);
+        return response()->json(['message' => 'Successful delete'], 200);
     }
     public function getPost(Request $request ,User $user)
     {
