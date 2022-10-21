@@ -18,7 +18,7 @@ paths:
         $ref: '#/components/requestBodies/AddPost'
       responses:
         '201':
-          description: Successful Created
+          description: Successful created
           content:
             application/json:
               schema:
@@ -30,7 +30,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
         '500':
-          description: server error
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -45,7 +45,7 @@ paths:
       description: Get all Posts ordered by created date
       responses:
         '200':
-          description: successful operation & a list of Posts
+          description: Successful operation & a list of Posts
           content:
             application/json:
               schema:
@@ -111,7 +111,7 @@ paths:
             format: int64
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
