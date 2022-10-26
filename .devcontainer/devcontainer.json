@@ -23,7 +23,10 @@
 				"esbenp.prettier-vscode",
 				"streetsidesoftware.code-spell-checker",
 				"msamgan.laravel-pint-vscode",
-        		"42Crunch.vscode-openapi"
+				"42Crunch.vscode-openapi",
+				"onecentlin.laravel-blade",
+				"MehediDracula.php-constructor",
+				"amiralizadeh9480.laravel-extra-intellisense"
 			]
 		}
 	},

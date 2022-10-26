@@ -8,6 +8,11 @@
         "streetsidesoftware.code-spell-checker",
         "msamgan.laravel-pint-vscode",
         "42Crunch.vscode-openapi",
-        "hediet.vscode-drawio"
+        "hediet.vscode-drawio",
+        "onecentlin.laravel-blade",
+        "onecentlin.laravel5-snippets",
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "ahinkle.laravel-model-snippets",
+        "MehediDracula.php-constructor"
     ]
 }
