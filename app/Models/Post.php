@@ -14,9 +14,10 @@ class Post extends Model
     use UuidTrait;
     protected $fillable = [
         'title',
-        'content',
-        'user_id'
+        'content'
+        // 'user_id'
     ];
+
     protected function createdAt(): Attribute
     {
         return Attribute::make(
@@ -29,9 +30,9 @@ class Post extends Model
             get: fn ($value) => Carbon::parse($value, 'UTC')->tz('Asia/Taipei')->format('Y-m-d H:i:s'),
         );
     }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
+    public function postable()
+    {
+        return $this->morphTo();
+    }
 }

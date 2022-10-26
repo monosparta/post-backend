@@ -17,8 +17,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->string('title');
             $table->string('content',10000);
-            $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->morphs('postable');
             $table->timestamps();
         });
     }
