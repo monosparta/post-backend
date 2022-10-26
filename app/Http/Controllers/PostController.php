@@ -105,7 +105,7 @@ class PostController extends Controller
         $post->delete();
         return response()->json(['message' => 'Successful delete'], 200);
     }
-    public function getPost(Request $request ,User $user)
+    public function getPost(Request $request ,AdminUser $user)
     {
        return response()->json(new AuthorPostsResource($user));
     }
