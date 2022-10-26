@@ -28,7 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericResponseWithError'
         '500':
           description: Internal server error
           content:
@@ -157,7 +157,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericResponseWithError'
         '404':
           description: Post not found
           content:
@@ -286,8 +286,29 @@ components:
     GenericResponse:
       type: object
       properties:
+        success:
+          type: boolean
+          default: false
+        statusCode:
+          type: number
+        errorCode:
+          type: number
         message:
           type: string
+    GenericResponseWithError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        statusCode:
+          type: number
+        errorCode:
+          type: number
+        message:
+          type: string
+        errors:
+          type: object
   requestBodies:
     AddPost:
       description: Post object to be added
