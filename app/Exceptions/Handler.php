@@ -2,19 +2,19 @@
 
 namespace App\Exceptions;
 
-use Throwable;
-use Illuminate\Database\QueryException;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Broadcasting\BroadcastException;
-use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Auth\Access\AuthorizationException;
-use Prettus\Validator\Exceptions\ValidatorException;
-use Laravel\Passport\Exceptions\OAuthServerException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Validation\ValidationException;
+use Laravel\Passport\Exceptions\OAuthServerException;
+use Prettus\Validator\Exceptions\ValidatorException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
                 'success' => false,
                 'statusCode' => 500,
                 'errorCode' => 0,
-                'message' => 'Server Error',
+                'message' => 'Internal Server Error',
             ], 500);
         });
 
@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
                 'success' => false,
                 'statusCode' => 404,
                 'errorCode' => 0,
-                'message' => 'Server Error',
+                'message' => 'Requested resource not found',
             ], 404);
         });
 
@@ -76,7 +76,7 @@ class Handler extends ExceptionHandler
                 'success' => false,
                 'statusCode' => 404,
                 'errorCode' => 0,
-                'message' => 'Server Error',
+                'message' => 'Requested resource not found',
             ], 404);
         });
 
@@ -218,23 +218,13 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Throwable
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ModelNotFoundException) {
-            return response()->json([
-                'message' => 'Resource for ' . str_replace('App\\Models\\', '', $exception->getModel()) . ' not found',
-            ], 404);
-        }
-        return response()->json([
-            'message' => 'Internal server error',
-        ], 500);
-
-        // return parent::render($request,  $exception);
+        return parent::render($request, $exception);
     }
 }
