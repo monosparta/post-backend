@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\V1\AuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserCategoryController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\EnumerateController;
+use App\Http\Controllers\UserCategoryController;
+use App\Http\Controllers\EnumerateItemController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 /*
@@ -52,3 +54,11 @@ Route::delete('post/{post}',[PostController::class,'destroy']);//d
 Route::get('author/{user}/posts',[PostController::class,'getPost']);
 
  //Route::apiResource('post', PostController::class);
+
+/* Enumerate */
+Route::get('enumerate/{enumerateName}/items', [EnumerateController::class, 'dropDown']);
+Route::get('enumerate/url', [EnumerateController::class, 'getEnumerateUrl']);
+
+Route::patch('enumerateItems/{enumerateItem}/default', [EnumerateItemController::class, 'defaultValue']);
+Route::patch('enumerateItems/{enumerateItem}/sequence/up', [EnumerateItemController::class, 'upSequence']);
+Route::patch('enumerateItems/{enumerateItem}/sequence/down', [EnumerateItemController::class, 'downSequence']);
