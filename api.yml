@@ -7,6 +7,8 @@ info:
 tags:
   - name: post
     description: Everything about your post
+servers:
+  - url: 'http://localhost:8000/api'
 paths:
   /post:
     post:
