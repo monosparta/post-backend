@@ -23,7 +23,12 @@ class PostController extends Controller
         {
             return new PostDataResource($item) ;
         });
-        return response()->json($post_arr, 200);
+        return response()->json([
+            'success' => true,
+            'statusCode' => 200,
+            'message' => 'Query success.',
+            'data' => $post_arr
+        ], 200);
     }
 
     /**
@@ -51,9 +56,13 @@ class PostController extends Controller
         ]);
         $Post = Post::create($request->all());
         return response()->json([
-            'post_id' => $Post->id,
-            'message' => 'Successful Created'
-            ], 201);
+            'success' => true,
+            'statusCode' => 201,
+            'message' => 'Post created.',
+            'data' => [
+                'post_id' => $Post->id,
+            ]
+        ], 201);
     }
 
     /**
@@ -64,7 +73,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json(new PostDataResource($post), 200);
+        return response()->json([
+            'success' => true,
+            'statusCode' => 200,
+            'message' => 'Query success.',
+            'data' => new PostDataResource($post)
+        ], 200);
     }
 
     /**
@@ -89,9 +103,13 @@ class PostController extends Controller
     {
         $post->update($request->all());
         return response()->json([
-            'post_id' => $post->id,
-            'message' => 'successful update'
-            ], 200);
+            'success' => true,
+            'statusCode' => 200,
+            'message' => 'Post updated',
+            'data' => [
+                'post_id' => $post->id,
+            ]
+        ], 200);
     }
 
     /**
@@ -103,10 +121,20 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return response()->json(['message' => 'Successful delete'], 200);
+        return response()->json([
+            'success' => true,
+            'statusCode' => 200,
+            'message' => 'Post deleted.'
+        ], 200);
     }
-    public function getPost(Request $request ,AdminUser $user)
+
+    public function getPost(Request $request, AdminUser $user)
     {
-       return response()->json(new AuthorPostsResource($user));
+        return response()->json([
+            'success' => true,
+            'statusCode' => 200,
+            'message' => 'Query success.',
+            'data' => new AuthorPostsResource($user)
+        ], 200);
     }
 }

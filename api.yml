@@ -22,7 +22,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostPut'
+                $ref: '#/components/schemas/PostResponse'
         '400':
           description: Incorrect format
           content:
@@ -49,9 +49,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
         '500':
           description: Internal server error
           content:
@@ -80,7 +90,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/User'
         '404':
           description: Post not found
           content:
@@ -115,7 +135,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Post'
         '404':
           description: Post not found
           content:
@@ -151,7 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostPut'
+                $ref: '#/components/schemas/PostResponse'
         '400':
           description: Incorrect format
           content:
@@ -232,14 +262,22 @@ components:
               format: uuid
             name:
               type: string
-    PostPut:
+    PostResponse:
       type: object
       properties:
-        post_id: 
-          type: string
-          format: uuid
+        success:
+          type: boolean
+          default: true
+        statusCode:
+          type: number
         message:
           type: string
+        data:
+          type: object
+          properties:
+            post_id: 
+              type: string
+              format: uuid
     User:
       type: object
       properties:
