@@ -86,10 +86,17 @@ class PostController extends Controller
 
         $index = array_search($post->id, $userPosts->map->id->toArray());
 
-        $response['previous'] = ($index !== 0) ? new PostResource($userPosts->slice($index - 1, 1)->first()) : null;
+        $previous = $userPosts->slice($index - 1, 1)->first();
+        $response['previous'] = ($index !== 0) ? [
+            'post_id' => $previous->id,
+            'title' => $previous->title
+        ] : null;
 
         $next = $userPosts->slice($index + 1, 1)->first();
-        $response['next'] = ($next) ? new PostResource($next) : null;
+        $response['next'] = ($next) ? [
+            'post_id' => $next->id,
+            'title' => $next->title
+        ] : null;
 
         return response()->json($response, 200);
     }

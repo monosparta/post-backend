@@ -250,9 +250,9 @@ paths:
                   data:
                     $ref: '#/components/schemas/Post'
                   previous:
-                    $ref: '#/components/schemas/UserPost'
+                    $ref: '#/components/schemas/UserPostPage'
                   next:
-                    $ref: '#/components/schemas/UserPost'
+                    $ref: '#/components/schemas/UserPostPage'
               examples:
                 first:
                   value:
@@ -272,9 +272,6 @@ paths:
                     next:
                       post_id: '3924595d-1c1c-4acc-9843-590089bda74b'
                       title: 'Qui sit mollitia odio consectetur minus.'
-                      content: 'Et dolor sint cumque earum et ut aut. Sequi quaerat ea odit ut. Optio atque vel et delectus quos et.'
-                      created_at: '2022-10-26 17:43:26'
-                      updated_at: '2022-10-26 17:43:26'
                 middle:
                   value:
                     success: true
@@ -292,15 +289,9 @@ paths:
                     previous: 
                       post_id: '27565488-ab14-431d-93f9-867d7292578d'
                       title: 'Ut omnis ullam neque omnis architecto quos.'
-                      content: 'Sunt esse consequuntur similique ea nemo unde nemo. Ratione fugit sit occaecati. Sit ex molestias illum eos vero est quis.'
-                      created_at: '2022-10-26 17:43:26'
-                      updated_at: '2022-10-26 17:43:26'
                     next:
                       post_id: 'f52846a8-351c-407d-a792-f4d04ce6f04b'
                       title: 'Adipisci quod omnis enim nulla modi odit sint aspernatur.'
-                      content: 'Excepturi ea minus est et doloribus ut accusantium. Et iure dolorem iusto ipsam et sint ut. Et quisquam nihil fuga aliquid amet tenetur fugit. Ratione vitae eveniet delectus corrupti.'
-                      created_at: '2022-10-26 17:43:26'
-                      updated_at: '2022-10-26 17:43:26'
                 last:
                   value:
                     success: true
@@ -318,9 +309,6 @@ paths:
                     previous: 
                       post_id: '3924595d-1c1c-4acc-9843-590089bda74b'
                       title: 'Qui sit mollitia odio consectetur minus.'
-                      content: 'Et dolor sint cumque earum et ut aut. Sequi quaerat ea odit ut. Optio atque vel et delectus quos et.'
-                      created_at: '2022-10-26 17:43:26'
-                      updated_at: '2022-10-26 17:43:26'
                     next: null
         '404':
           description: Post not found
@@ -513,6 +501,14 @@ components:
         updated_at:
           type: string
           format: date-time
+    UserPostPage:
+      type: object
+      properties:
+        post_id:
+          type: string
+          format: uuid
+        title:
+          type: string
     PostResponse:
       type: object
       properties:
