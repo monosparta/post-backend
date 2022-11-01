@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\AdminUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\PostResource;
 use App\Http\Resources\PostDataResource;
 use App\Http\Resources\AuthorPostsResource;
 use Illuminate\Validation\ValidationException;
@@ -73,12 +75,23 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json([
+        $response = [
             'success' => true,
             'statusCode' => 200,
             'message' => 'Query success.',
             'data' => new PostDataResource($post)
-        ], 200);
+        ];
+
+        $userPosts = $post->user->posts->sortByDesc('created_at')->values();
+
+        $index = array_search($post->id, $userPosts->map->id->toArray());
+
+        $response['previous'] = ($index !== 0) ? new PostResource($userPosts->slice($index - 1, 1)->first()) : null;
+
+        $next = $userPosts->slice($index + 1, 1)->first();
+        $response['next'] = ($next) ? new PostResource($next) : null;
+
+        return response()->json($response, 200);
     }
 
     /**
