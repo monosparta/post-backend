@@ -39,5 +39,7 @@ class AdminUserSeeder extends Seeder
         foreach ($guests as $data) {
             $admin = AdminUser::create($data);
         }
+
+        AdminUser::factory(3)->create();
     }
 }

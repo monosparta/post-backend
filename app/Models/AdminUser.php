@@ -79,4 +79,9 @@ class AdminUser extends Authenticatable
         'last_login_at' => 'datetime',
         'offline_at' => 'datetime',
     ];
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id');
+    }
 }

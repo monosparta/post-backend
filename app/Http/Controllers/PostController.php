@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AuthorPostsResource;
-use App\Http\Resources\PostDataResource;
 use App\Models\Post;
-use App\Models\User;
+use App\Models\AdminUser;
 use Illuminate\Http\Request;
+use App\Http\Resources\PostDataResource;
+use App\Http\Resources\AuthorPostsResource;
 use Illuminate\Validation\ValidationException;
+
 class PostController extends Controller
 {
     /**
@@ -43,22 +44,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'title' => 'required|string',
-                'content' => 'required|string',
-                'user_id' => 'required|uuid'
-            ]);
-            $Post = Post::create($request->all());
-            return response()->json([
-                'post_id' => $Post->id,
-                'message' => 'Successful Created'
-                ], 201);
-        } catch (ValidationException $exception) {
-            $errorMessage =
-                $exception->validator->getMessageBag()->getMessages();
-            return response()->json(['message' => $errorMessage], 400);
-        }
+        $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'user_id' => 'required|uuid'
+        ]);
+        $Post = Post::create($request->all());
+        return response()->json([
+            'post_id' => $Post->id,
+            'message' => 'Successful Created'
+            ], 201);
     }
 
     /**
@@ -110,7 +105,7 @@ class PostController extends Controller
         $post->delete();
         return response()->json(['message' => 'Successful delete'], 200);
     }
-    public function getPost(Request $request ,User $user)
+    public function getPost(Request $request ,AdminUser $user)
     {
        return response()->json(new AuthorPostsResource($user));
     }

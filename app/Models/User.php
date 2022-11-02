@@ -95,9 +95,4 @@ class User extends Authenticatable
             set: fn ($value) => Hash::make($value)
         );
     }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
 }
