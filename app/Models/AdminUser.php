@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -20,7 +20,7 @@ class AdminUser extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use UuidTrait;
+    use HasUuids;
 
     public const baseValidator = [
         'name' => 'required|string',
