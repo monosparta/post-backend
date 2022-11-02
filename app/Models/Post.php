@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Post extends Model
 {
     use HasFactory;
-    use UuidTrait;
+    use HasUuids;
     protected $fillable = [
         'title',
         'content',
