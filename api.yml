@@ -362,7 +362,7 @@ paths:
                 $ref: '#/components/schemas/PostResponse'
               example:
                 success: true
-                statusCode: 201
+                statusCode: 200
                 message: 'Post updated.'
                 data:
                   post_id: '27565488-ab14-431d-93f9-867d7292578d'
