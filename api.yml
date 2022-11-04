@@ -7,6 +7,8 @@ info:
 tags:
   - name: post
     description: Everything about your post
+servers:
+  - url: 'http://localhost:8000/api'
 paths:
   /post:
     post:
@@ -22,19 +24,66 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostPut'
+                $ref: '#/components/schemas/PostResponse'
+              example:
+                success: true
+                statusCode: 201
+                message: 'Post created.'
+                data:
+                  post_id: '27565488-ab14-431d-93f9-867d7292578d'
         '400':
           description: Incorrect format
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponseWithError'
+              examples:
+                'title missing':
+                  value:
+                    success: false
+                    statusCode: 400
+                    errorCode: 400
+                    message: 'clientResponse.badRequest.invalid_parameter'
+                    errors:
+                      title: ['The title field is required.']
+                'content missing':
+                  value:
+                    success: false
+                    statusCode: 400
+                    errorCode: 400
+                    message: 'clientResponse.badRequest.invalid_parameter'
+                    errors:
+                      content: ['The content field is required.']
+                'user_id missing':
+                  value:
+                    success: false
+                    statusCode: 400
+                    errorCode: 400
+                    message: 'clientResponse.badRequest.invalid_parameter'
+                    errors:
+                      user_id: 
+                        - 'The user_id field is required.'
+                'user_id invalid':
+                  value:
+                    success: false
+                    statusCode: 400
+                    errorCode: 400
+                    message: 'clientResponse.badRequest.invalid_parameter'
+                    errors:
+                      user_id: 
+                        - 'The user id must be a valid UUID.'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 500
+                errorCode: 0
+                message: 'Internal Server Error'
+                
       security:
         - bearerAuth: []
   /posts:
@@ -49,15 +98,51 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+              example:
+                success: true
+                statusCode: 200
+                message: 'Query success.'
+                data: 
+                  - post_id: '27565488-ab14-431d-93f9-867d7292578d'
+                    title: 'Ut omnis ullam neque omnis architecto quos.'
+                    content: 'Sunt esse consequuntur similique ea nemo unde nemo. Ratione fugit sit occaecati. Sit ex molestias illum eos vero est quis.'
+                    created_at: '2022-10-26 17:43:26'
+                    updated_at: '2022-10-26 17:43:26'
+                    user:
+                      user_id: '95a3ca67-d5ff-4ce4-b4d1-4f77246ebe88'
+                      name: 'Cynthia Collins'
+                  - post_id: 'a17dcfe6-91e9-4fe7-9ced-40a0429a318b'
+                    title: 'Ipsam nihil et voluptatem maxime suscipit voluptatem.'
+                    content: 'Mollitia voluptatem magni incidunt quis. Aut omnis earum sit mollitia minus.'
+                    created_at: '2022-10-26 17:43:26'
+                    updated_at: '2022-10-26 17:43:26'
+                    user:
+                      user_id: '5489b03a-b475-482c-a0e2-d2b46915f509'
+                      name: 'Dr. Juliet Nitzsche V'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 500
+                errorCode: 0
+                message: 'Internal Server Error'
       security:
         - bearerAuth: []
   /author/{user_id}/posts:
@@ -80,19 +165,57 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/User'
+              example:
+                success: true
+                statusCode: 200
+                message: "Query success."
+                data:
+                  user_id: '5489b03a-b475-482c-a0e2-d2b46915f509'
+                  name: 'Dr. Juliet Nitzsche V'
+                  posts:
+                    - post_id: 'a17dcfe6-91e9-4fe7-9ced-40a0429a318b'
+                      title: 'Ipsam nihil et voluptatem maxime suscipit voluptatem.'
+                      content: 'Mollitia voluptatem magni incidunt quis. Aut omnis earum sit mollitia minus.'
+                      created_at: '2022-10-26 17:43:26'
+                      updated_at: '2022-10-26 17:43:26'
+                    - post_id: '4a4c93ca-9327-4376-9b02-f304039ffe08'
+                      title: 'Tempora eum sit sapiente mollitia similique vitae.'
+                      content: 'Aut corporis vero aut consequuntur doloribus qui vel. Ipsam quae est aliquid commodi voluptas omnis alias.'
+                      created_at: '2022-10-26 17:43:26'
+                      updated_at: '2022-10-26 17:43:26'
         '404':
           description: Post not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 404
+                errorCode: 0
+                message: 'Requested resource not found'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 500
+                errorCode: 0
+                message: 'Internal Server Error'
       security:
         - bearerAuth: []
   /post/{post_id}:
@@ -115,19 +238,104 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  statusCode:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Post'
+                  previous:
+                    $ref: '#/components/schemas/UserPostPage'
+                  next:
+                    $ref: '#/components/schemas/UserPostPage'
+              examples:
+                first:
+                  value:
+                    success: true
+                    statusCode: 200
+                    message: 'Query success.'
+                    data: 
+                      post_id: '27565488-ab14-431d-93f9-867d7292578d'
+                      title: 'Ut omnis ullam neque omnis architecto quos.'
+                      content: 'Sunt esse consequuntur similique ea nemo unde nemo. Ratione fugit sit occaecati. Sit ex molestias illum eos vero est quis.'
+                      created_at: '2022-10-26 17:43:26'
+                      updated_at: '2022-10-26 17:43:26'
+                      user:
+                        user_id: '95a3ca67-d5ff-4ce4-b4d1-4f77246ebe88'
+                        name: 'Cynthia Collins'
+                    previous: null
+                    next:
+                      post_id: '3924595d-1c1c-4acc-9843-590089bda74b'
+                      title: 'Qui sit mollitia odio consectetur minus.'
+                      created_at: '2022-10-26 17:43:26'
+                middle:
+                  value:
+                    success: true
+                    statusCode: 200
+                    message: 'Query success.'
+                    data: 
+                      post_id: '3924595d-1c1c-4acc-9843-590089bda74b'
+                      title: 'Qui sit mollitia odio consectetur minus.'
+                      content: 'Et dolor sint cumque earum et ut aut. Sequi quaerat ea odit ut. Optio atque vel et delectus quos et.'
+                      created_at: '2022-10-26 17:43:26'
+                      updated_at: '2022-10-26 17:43:26'
+                      user:
+                        user_id: '95a3ca67-d5ff-4ce4-b4d1-4f77246ebe88'
+                        name: 'Cynthia Collins'
+                    previous: 
+                      post_id: '27565488-ab14-431d-93f9-867d7292578d'
+                      title: 'Ut omnis ullam neque omnis architecto quos.'
+                      created_at: '2022-10-26 17:43:26'
+                    next:
+                      post_id: 'f52846a8-351c-407d-a792-f4d04ce6f04b'
+                      title: 'Adipisci quod omnis enim nulla modi odit sint aspernatur.'
+                      created_at: '2022-10-26 17:43:26'
+                last:
+                  value:
+                    success: true
+                    statusCode: 200
+                    message: 'Query success.'
+                    data: 
+                      post_id: 'f52846a8-351c-407d-a792-f4d04ce6f04b'
+                      title: 'Adipisci quod omnis enim nulla modi odit sint aspernatur.'
+                      content: 'Excepturi ea minus est et doloribus ut accusantium. Et iure dolorem iusto ipsam et sint ut. Et quisquam nihil fuga aliquid amet tenetur fugit. Ratione vitae eveniet delectus corrupti.'
+                      created_at: '2022-10-26 17:43:26'
+                      updated_at: '2022-10-26 17:43:26'
+                      user:
+                        user_id: '95a3ca67-d5ff-4ce4-b4d1-4f77246ebe88'
+                        name: 'Cynthia Collins'
+                    previous: 
+                      post_id: '3924595d-1c1c-4acc-9843-590089bda74b'
+                      title: 'Qui sit mollitia odio consectetur minus.'
+                      created_at: '2022-10-26 17:43:26'
+                    next: null
         '404':
           description: Post not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 404
+                errorCode: 0
+                message: 'Requested resource not found'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 500
+                errorCode: 0
+                message: 'Internal Server Error'
       security:
         - bearerAuth: []
     put:
@@ -151,25 +359,60 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostPut'
+                $ref: '#/components/schemas/PostResponse'
+              example:
+                success: true
+                statusCode: 200
+                message: 'Post updated.'
+                data:
+                  post_id: '27565488-ab14-431d-93f9-867d7292578d'
         '400':
           description: Incorrect format
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponseWithError'
+              examples:
+                'title missing':
+                  value:
+                    success: false
+                    statusCode: 400
+                    errorCode: 400
+                    message: 'clientResponse.badRequest.invalid_parameter'
+                    errors:
+                      title: 
+                        - 'The title field is required.'
+                'content missing':
+                  value:
+                    success: false
+                    statusCode: 400
+                    errorCode: 400
+                    message: 'clientResponse.badRequest.invalid_parameter'
+                    errors:
+                      content: 
+                        - 'The content field is required.'
         '404':
           description: Post not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 404
+                errorCode: 0
+                message: 'Requested resource not found'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 500
+                errorCode: 0
+                message: 'Internal Server Error'
       security:
         - bearerAuth: []
     delete:
@@ -192,18 +435,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: true
+                statusCode: 200
+                message: 'Post deleted.'
         '404':
           description: Post not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 404
+                errorCode: 0
+                message: 'Requested resource not found'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                statusCode: 500
+                errorCode: 0
+                message: 'Internal Server Error'
       security:
         - bearerAuth: []
 components:
@@ -232,14 +489,49 @@ components:
               format: uuid
             name:
               type: string
-    PostPut:
+    UserPost:
       type: object
       properties:
-        post_id: 
+        post_id:
           type: string
           format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    UserPostPage:
+      type: object
+      properties:
+        post_id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    PostResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: true
+        statusCode:
+          type: number
         message:
           type: string
+        data:
+          type: object
+          properties:
+            post_id: 
+              type: string
+              format: uuid
     User:
       type: object
       properties:
@@ -251,21 +543,7 @@ components:
         post:
           type: array
           items:
-            type: object
-            properties:
-              post_id:
-                type: string
-                format: uuid
-              title:
-                type: string
-              content:
-                type: string
-              created_at:
-                type: string
-                format: date-time
-              updated_at:
-                type: string
-                format: date-time
+            $ref: '#/components/schemas/UserPost'
     PostRequest:
       type: object
       properties:
