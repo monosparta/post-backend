@@ -89,13 +89,15 @@ class PostController extends Controller
         $previous = $userPosts->slice($index - 1, 1)->first();
         $response['previous'] = ($index !== 0) ? [
             'post_id' => $previous->id,
-            'title' => $previous->title
+            'title' => $previous->title,
+            'created_at' => $previous->created_at
         ] : null;
 
         $next = $userPosts->slice($index + 1, 1)->first();
         $response['next'] = ($next) ? [
             'post_id' => $next->id,
-            'title' => $next->title
+            'title' => $next->title,
+            'created_at' => $next->created_at
         ] : null;
 
         return response()->json($response, 200);

@@ -509,6 +509,9 @@ components:
           format: uuid
         title:
           type: string
+        created_at:
+          type: string
+          format: date-time
     PostResponse:
       type: object
       properties:
